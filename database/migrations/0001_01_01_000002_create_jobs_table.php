@@ -1,5 +1,6 @@
 <?php
-#Never gonna give you up, never gonna let you down, never gonna run git sround and desert you
+#Never gonna give you up, never gonna let you down, never gonna run git round and desert you
+#Never gonna give you up, never gonna let you down, never gonna run git round and desert you
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
