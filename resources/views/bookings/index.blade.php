@@ -33,5 +33,8 @@
         @endforeach
         </tbody>
     </table>
-    {{ $bookings->links() }}
+    @foreach ($bookings as $booking)
+        <p>{{ $booking->id }} - {{ $booking->name }}</p>
+    @endforeach
+
 @endsection
