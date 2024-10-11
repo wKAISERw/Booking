@@ -1,5 +1,5 @@
 <?php
-
+#created composer view
 namespace App\View\Composers;
 
 use Illuminate\View\View;
