@@ -9,7 +9,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CartController;
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Middleware\CheckRole;
+
 
 // Public routes
 Route::get('/', function () {
