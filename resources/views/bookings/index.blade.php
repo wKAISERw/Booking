@@ -1,12 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Bookings</h1>
-    <a href="{{ route('bookings.create') }}" class="btn btn-primary mb-3">Create New Booking</a>
+    <h1>My Bookings</h1>
     <table class="table">
         <thead>
         <tr>
-            <th>Customer</th>
+            <th>Order #</th>
+            <th>Status</th>
+            <th>Customer Name</th>
+            <th>Customer Email</th>
             <th>Event</th>
             <th>Ticket Type</th>
             <th>Quantity</th>
@@ -14,27 +16,37 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($bookings as $booking)
+        @foreach($orders as $order)
             <tr>
-                <td>{{ $booking->customer_name }}</td>
-                <td>{{ $booking->ticket->event->name }}</td>
-                <td>{{ $booking->ticket->type }}</td>
-                <td>{{ $booking->quantity }}</td>
+                <td>{{ $order->id }}</td>
+                <td>{{ $order->status }}</td>
+                <td>{{ Auth::user()->name }}</td>
+                <td>{{ Auth::user()->email }}</td>
                 <td>
-                    <a href="{{ route('bookings.show', $booking) }}" class="btn btn-sm btn-info">View</a>
-                    <a href="{{ route('bookings.edit', $booking) }}" class="btn btn-sm btn-warning">Edit</a>
-                    <form action="{{ route('bookings.destroy', $booking) }}" method="POST" style="display: inline-block;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
-                    </form>
+                    @foreach($order->items as $item)
+                        {{ $item->ticket->event->name }}<br>
+                    @endforeach
+                </td>
+                <td>
+                    @foreach($order->items as $item)
+                        {{ $item->ticket->type }}<br>
+                    @endforeach
+                </td>
+                <td>
+                    @foreach($order->items as $item)
+                        {{ $item->quantity }}<br>
+                    @endforeach
+                </td>
+                <td>
+                    @if($order->status === 'pending' || $order->status === 'confirmed')
+                        <form action="{{ route('orders.cancel', $order) }}" method="POST" style="display: inline-block;">
+                            @csrf
+                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Cancel</button>
+                        </form>
+                    @endif
                 </td>
             </tr>
         @endforeach
         </tbody>
     </table>
-    @foreach ($bookings as $booking)
-        <p>{{ $booking->id }} - {{ $booking->name }}</p>
-    @endforeach
-
 @endsection

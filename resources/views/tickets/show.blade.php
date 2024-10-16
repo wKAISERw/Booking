@@ -1,11 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Ticket Details</h1>
-    <p><strong>Event:</strong> {{ $ticket->event->name }}</p>
-    <p><strong>Type:</strong> {{ $ticket->type }}</p>
-    <p><strong>Price:</strong> {{ $ticket->price }}</p>
-    <p><strong>Quantity:</strong> {{ $ticket->quantity }}</p>
-    <a href="{{ route('tickets.edit', $ticket) }}" class="btn btn-warning">Edit</a>
-    <a href="{{ route('tickets.index') }}" class="btn btn-secondary">Back to List</a>
+    <h1>{{ $ticket->event->name }} - {{ $ticket->type }}</h1>
+    <p><strong>Price:</strong> ${{ $ticket->price }}</p>
+    <p><strong>Available Quantity:</strong> {{ $ticket->quantity }}</p>
+
+    <!-- Add to Cart Form -->
+    <form action="{{ route('cart.add', $ticket->id) }}" method="POST">
+        @csrf
+        <div class="form-group">
+            <label for="quantity">Quantity</label>
+            <input type="number" name="quantity" id="quantity" value="1" min="1" max="{{ $ticket->quantity }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Add to Cart</button>
+    </form>
+
+    <a href="{{ route('tickets.index') }}" class="btn btn-secondary mt-3">Back to Tickets</a>
 @endsection

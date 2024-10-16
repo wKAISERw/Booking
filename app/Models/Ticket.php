@@ -9,7 +9,7 @@ class Ticket extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['event_id', 'type', 'price', 'quantity'];
+    protected $fillable = ['event_id', 'type', 'price', 'quantity', 'seat_info'];
 
     public function event()
     {
@@ -19,5 +19,15 @@ class Ticket extends Model
     public function bookings()
     {
         return $this->hasMany(Booking::class);
+    }
+
+    public function cartItems()
+    {
+        return $this->hasMany(CartItem::class);
+    }
+
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
     }
 }
