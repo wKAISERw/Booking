@@ -3,44 +3,61 @@
 @section('content')
     <div class="container mt-4">
         <h1>Welcome to Ticket Booking System</h1>
-        <p>Choose a category from the navigation bar above to get started.</p>
-        <div class="row mt-4">
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Venues</h5>
-                        <p class="card-text">Explore our available venues.</p>
-                        <a href="{{ route('venues.index') }}" class="btn btn-primary">View Venues</a>
+
+        @auth
+            <p>Hello, {{ Auth::user()->name }}!</p>
+
+            @if(Auth::user()->hasRole('admin'))
+                <h2>Admin Dashboard</h2>
+                <div class="row mt-4">
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Manage Venues</h5>
+                                <a href="{{ route('venues.index') }}" class="btn btn-primary">View Venues</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Manage Events</h5>
+                                <a href="{{ route('events.index') }}" class="btn btn-primary">View Events</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Manage Tickets</h5>
+                                <a href="{{ route('tickets.index') }}" class="btn btn-primary">View Tickets</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Events</h5>
-                        <p class="card-text">Check out upcoming events.</p>
-                        <a href="{{ route('events.index') }}" class="btn btn-primary">View Events</a>
+            @else
+                <h2>User Dashboard</h2>
+                <div class="row mt-4">
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">My Bookings</h5>
+                                <a href="{{ route('bookings.index') }}" class="btn btn-primary">View Bookings</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Available Events</h5>
+                                <a href="{{ route('events.index') }}" class="btn btn-primary">View Events</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Tickets</h5>
-                        <p class="card-text">Browse available tickets.</p>
-                        <a href="{{ route('tickets.index') }}" class="btn btn-primary">View Tickets</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Bookings</h5>
-                        <p class="card-text">Manage your bookings.</p>
-                        <a href="{{ route('bookings.index') }}" class="btn btn-primary">View Bookings</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+            @endif
+        @else
+            <p>Please <a href="{{ route('login') }}">log in</a> or <a href="{{ route('register') }}">register</a> to start booking tickets.</p>
+        @endauth
     </div>
 @endsection
