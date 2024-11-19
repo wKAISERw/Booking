@@ -29,14 +29,6 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    public function cart(): HasOne
-    {
-        return $this->hasOne(Cart::class);
-    }
-    public function orders(): HasMany
-    {
-        return $this->hasMany(Order::class);
-    }
     public function hasRole($role)
     {
         return $this->role === $role;

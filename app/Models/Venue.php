@@ -9,7 +9,8 @@ class Venue extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'address', 'capacity'];
+    // Додаємо поле 'image' до масиву $fillable
+    protected $fillable = ['name', 'address', 'capacity', 'image'];
 
     public function events()
     {

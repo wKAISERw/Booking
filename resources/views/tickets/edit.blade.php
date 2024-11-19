@@ -16,6 +16,11 @@
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
+        <div id="event-image" class="mb-3">
+            @if ($ticket->event->image)
+                <img src="{{ asset('storage/' . $ticket->event->image) }}" class="img-fluid" alt="{{ $ticket->event->name }}" style="object-fit: cover; height: 200px;">
+            @endif
+        </div>
         <div class="form-group">
             <label for="type">Type</label>
             <input type="text" class="form-control @error('type') is-invalid @enderror" id="type" name="type" value="{{ old('type', $ticket->type) }}" required>

@@ -2,7 +2,7 @@
 
 @section('content')
     <h1>Edit Event</h1>
-    <form action="{{ route('events.update', $event) }}" method="POST">
+    <form action="{{ route('events.update', $event) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="form-group">
@@ -34,6 +34,16 @@
                 @endforeach
             </select>
             @error('venue_id')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+        <div class="form-group">
+            <label for="image">Image</label>
+            <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image" accept="image/*">
+            @if($event->image)
+                <img src="{{ asset('storage/' . $event->image) }}" alt="{{ $event->name }}" class="img-thumbnail mt-2" width="150">
+            @endif
+            @error('image')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
