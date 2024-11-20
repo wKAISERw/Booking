@@ -35,28 +35,29 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('venues', VenueController::class);
         Route::resource('events', EventController::class)->except(['index', 'show']);
         Route::resource('tickets', TicketController::class);
-        Route::resource('orders', OrderController::class); // для CRUD операцій з замовленнями
     });
 
     // Cart routes
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart/add/{ticket}', [CartController::class, 'addItem'])->name('cart.add');
+    Route::delete('/cart/remove/{ticket}', [CartController::class, 'removeItem'])->name('cart.remove');
+    Route::get('/cart/add/{ticket}', [CartController::class, 'showAddForm'])->name('cart.showAddForm');
+    Route::post('/cart/add/{ticket}', [CartController::class, 'addItem'])->name('cart.add');
 
-    Route::delete('/cart/remove/{cartItem}', [CartController::class, 'removeItem'])->name('cart.remove');
-    Route::patch('/cart/update/{cartItem}', [CartController::class, 'updateItem'])->name('cart.update');
 
-
-    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/confirm', [OrderController::class, 'confirm'])->name('orders.confirm');
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
     Route::post('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
-    Route::post('/orders/{order}/confirm', [OrderController::class, 'confirm'])->name('orders.confirm');
-
-
-
-    // Booking routes (if you still need them separately from orders)
-    Route::resource('bookings', BookingController::class);
-});
+    Route::get('/orders/history', [OrderController::class, 'history'])->name('orders.history');
 
 // Public event routes
 Route::get('/events', [EventController::class, 'index'])->name('events.index');
 Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
+
+Route::get('/tickets', [TicketController::class, 'index'])->name('tickets.index');
+Route::get('/tickets/{ticket}', [TicketController::class, 'show'])->name('tickets.show');
+
+// Public venue routes
+Route::get('/venues/{venue}', [VenueController::class, 'show'])->name('venues.show');
+});
+

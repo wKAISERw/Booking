@@ -8,12 +8,48 @@ use Illuminate\Http\Request;
 
 class TicketController extends Controller
 {
-    public function index()
-    {
-        $this->authorize('viewAny', Ticket::class);
-        $tickets = Ticket::with('event')->paginate(10);
-        return view('tickets.index', compact('tickets'));
+    public function index(Request $request)
+{
+    $this->authorize('viewAny', Ticket::class);
+
+    // Отримуємо фільтри
+    $eventIds = $request->input('event_id', []);
+    $minPrice = $request->input('min_price');
+    $maxPrice = $request->input('max_price');
+    $sort = $request->input('sort');
+
+    // Формуємо запит
+    $query = Ticket::with('event');
+
+    if ($eventIds) {
+        $query->whereIn('event_id', $eventIds);
     }
+
+    if ($minPrice) {
+        $query->where('price', '>=', $minPrice);
+    }
+
+    if ($maxPrice) {
+        $query->where('price', '<=', $maxPrice);
+    }
+
+    // Сортування
+    if ($sort == 'price_asc') {
+        $query->orderBy('price', 'asc');
+    } elseif ($sort == 'price_desc') {
+        $query->orderBy('price', 'desc');
+    }
+
+    // Пагінація
+    $tickets = $query->paginate(10);
+
+    // Події з підрахунком квитків
+    $events = Event::withCount('tickets')->get();
+
+    return view('tickets.index', compact('tickets', 'events'));
+}
+
+
 
     public function create()
     {

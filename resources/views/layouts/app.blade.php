@@ -26,22 +26,52 @@
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-            <!-- Навігаційні посилання -->
-            @auth
-                @if(auth()->user()->hasRole('admin'))
-                    <a class="nav-link" href="{{ route('venues.index') }}">Manage Venues</a>
-                    <a class="nav-link" href="{{ route('events.index') }}">Manage Events</a>
-                    <a class="nav-link" href="{{ route('tickets.index') }}">Manage Tickets</a>
-                @endif
-                <a class="nav-link" href="{{ route('bookings.index') }}">My Bookings</a>
-                <form method="POST" action="{{ route('logout') }}" class="d-inline">
-                    @csrf
-                    <button type="submit" class="btn btn-link">Logout</button>
-                </form>
-            @else
-                <a class="nav-link" href="{{ route('login') }}">Login</a>
-                <a class="nav-link" href="{{ route('register') }}">Register</a>
-            @endauth
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <!-- Навігаційні посилання -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    @auth
+                        @if(auth()->user()->hasRole('admin'))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('venues.index') }}">Manage Venues</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('events.index') }}">Manage Events</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('tickets.index') }}">Manage Tickets</a>
+                            </li>
+                        @endif
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('cart.index') }}">Cart</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('orders.history') }}">Order History</a>
+                        </li>
+                    @else
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('login') }}">Login</a>
+                        </li>
+                        @if (Route::has('register'))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('register') }}">Register</a>
+                            </li>
+                        @endif
+                    @endauth
+                </ul>
+
+                <!-- Authentication -->
+                @auth
+                    <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                        @csrf
+                        <button type="submit" class="btn btn-outline-danger">Logout</button>
+                    </form>
+                @endauth
+            </div>
         </div>
     </nav>
 

@@ -22,16 +22,6 @@
                     </div>
                     <div class="card-footer text-center">
                         <a href="{{ route('events.index') }}" class="btn btn-outline-secondary">Back to List</a>
-                        @can('update', $event)
-                            <a href="{{ route('events.edit', $event) }}" class="btn btn-outline-warning">Edit</a>
-                        @endcan
-                        @can('delete', $event)
-                            <form action="{{ route('events.destroy', $event) }}" method="POST" style="display: inline-block;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Are you sure?')">Delete</button>
-                            </form>
-                        @endcan
                     </div>
                 </div>
             </div>

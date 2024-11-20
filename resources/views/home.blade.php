@@ -41,23 +41,23 @@
                     <div class="col-md-3">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">My Bookings</h5>
-                                <a href="{{ route('bookings.index') }}" class="btn btn-primary">View Bookings</a>
+                                <h5 class="card-title">Available Events</h5>
+                                <a href="{{ route('events.index') }}" class="btn btn-primary">View Events</a>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">Available Events</h5>
-                                <a href="{{ route('events.index') }}" class="btn btn-primary">View Events</a>
+                                <h5 class="card-title">Available Tickets</h5>
+                                <a href="{{ route('tickets.index') }}" class="btn btn-primary">View Tickets</a>
                             </div>
                         </div>
                     </div>
                 </div>
             @endif
         @else
-            <p>Please <a href="{{ route('login') }}">log in</a> or <a href="{{ route('register') }}">register</a> to start booking tickets.</p>
+            <p>Please <a href="{{ route('login') }}">log in</a> or <a href="{{ route('register') }}">register</a> to start booking tickets and viewing events.</p>
         @endauth
     </div>
 @endsection

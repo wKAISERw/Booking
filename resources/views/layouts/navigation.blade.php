@@ -15,6 +15,9 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('tickets.index')" :active="request()->routeIs('tickets.index')">
+                        {{ __('Tickets') }}
+                    </x-nav-link>
                     @auth
                         @if(auth()->user()->hasRole('admin'))
                             <x-nav-link :href="route('venues.index')" :active="request()->routeIs('venues.index')">
@@ -27,8 +30,11 @@
                                 {{ __('Manage Tickets') }}
                             </x-nav-link>
                         @endif
-                        <x-nav-link :href="route('bookings.index')" :active="request()->routeIs('bookings.index')">
-                            {{ __('My Bookings') }}
+                        <x-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')">
+                            {{ __('Cart') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('orders.history')" :active="request()->routeIs('orders.history')">
+                            {{ __('Order History') }}
                         </x-nav-link>
                     @endauth
                 </div>
@@ -94,6 +100,9 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('tickets.index')" :active="request()->routeIs('tickets.index')">
+                {{ __('Tickets') }}
+            </x-responsive-nav-link>
             @auth
                 @if(auth()->user()->hasRole('admin'))
                     <x-responsive-nav-link :href="route('venues.index')" :active="request()->routeIs('venues.index')">
@@ -106,8 +115,11 @@
                         {{ __('Manage Tickets') }}
                     </x-responsive-nav-link>
                 @endif
-                <x-responsive-nav-link :href="route('bookings.index')" :active="request()->routeIs('bookings.index')">
-                    {{ __('My Bookings') }}
+                <x-responsive-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')">
+                    {{ __('Cart') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('orders.history')" :active="request()->routeIs('orders.history')">
+                    {{ __('Order History') }}
                 </x-responsive-nav-link>
             @endauth
         </div>
