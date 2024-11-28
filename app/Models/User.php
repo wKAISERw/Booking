@@ -47,4 +47,15 @@ class User extends Authenticatable
     {
         return $this->hasMany(Order::class);
     }
+
+    // Зв’язок із повідомленнями
+    public function sentMessages(): HasMany
+    {
+        return $this->hasMany(Message::class, 'sender_id');
+    }
+
+    public function receivedMessages(): HasMany
+    {
+        return $this->hasMany(Message::class, 'receiver_id');
+    }
 }

@@ -35,6 +35,7 @@
                         </div>
                     </div>
                 </div>
+                <a href="{{ route('admin.messages') }}" class="btn btn-link mt-3">Переглянути повідомлення користувачів</a>
             @else
                 <h2>User Dashboard</h2>
                 <div class="row mt-4">
@@ -55,6 +56,7 @@
                         </div>
                     </div>
                 </div>
+                <a href="{{ route('user.messages') }}" class="btn btn-link mt-3">У вас є питання? Задайте їх адміністратору</a>
             @endif
         @else
             <p>Please <a href="{{ route('login') }}">log in</a> or <a href="{{ route('register') }}">register</a> to start booking tickets and viewing events.</p>
