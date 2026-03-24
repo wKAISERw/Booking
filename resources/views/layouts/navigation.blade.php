@@ -6,7 +6,6 @@
             <span>Ticket<span class="text-primary">Sys</span></span>
         </a>
 
-        <!-- Кнопка для мобілок -->
         <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -15,42 +14,46 @@
             <!-- Публічні посилання (зліва) -->
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-1">
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('events.*') ? 'active fw-bold' : '' }}" href="{{ route('events.index') }}">
+                    <a class="nav-link {{ request()->routeIs('events.index') ? 'active fw-bold' : '' }}" href="{{ route('events.index') }}">
                         <i class="bi bi-calendar-event me-1"></i> Events
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('venues.*') ? 'active fw-bold' : '' }}" href="{{ route('venues.index') }}">
-                        <i class="bi bi-buildings me-1"></i> Venues
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('tickets.*') ? 'active fw-bold' : '' }}" href="{{ route('tickets.index') }}">
+                    <a class="nav-link {{ request()->routeIs('tickets.index') ? 'active fw-bold' : '' }}" href="{{ route('tickets.index') }}">
                         <i class="bi bi-ticket-detailed me-1"></i> Tickets
                     </a>
                 </li>
+
+                <!-- Venues.index доступний ТІЛЬКИ адміну згідно з твоїми роутами -->
+                @auth
+                    @if(auth()->user()->hasRole('admin'))
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('venues.index') ? 'active fw-bold' : '' }}" href="{{ route('venues.index') }}">
+                                <i class="bi bi-buildings me-1"></i> Venues
+                            </a>
+                        </li>
+                    @endif
+                @endauth
             </ul>
 
             <!-- Користувацькі та Адмінські посилання (справа) -->
             <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
                 @auth
-                    <!-- Швидкі посилання для Адміна (без випадаючого списку) -->
+                    <!-- Швидкі посилання для Адміна -->
                     @if(auth()->user()->hasRole('admin'))
-                        <li class="nav-item d-none d-lg-block">
-                            <span class="nav-link text-warning fw-bold px-0"><i class="bi bi-shield-lock me-1"></i>Admin:</span>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-warning {{ request()->routeIs('venues.index') ? 'active' : '' }}" href="{{ route('venues.index') }}">Venues</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-warning {{ request()->routeIs('events.index') ? 'active' : '' }}" href="{{ route('events.index') }}">Events</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-warning {{ request()->routeIs('tickets.index') ? 'active' : '' }}" href="{{ route('tickets.index') }}">Tickets</a>
+                        <li class="nav-item dropdown me-2">
+                            <a class="nav-link dropdown-toggle text-warning fw-bold" href="#" data-bs-toggle="dropdown">
+                                <i class="bi bi-shield-lock me-1"></i> Admin Panel
+                            </a>
+                            <ul class="dropdown-menu border-0 shadow-sm mt-2">
+                                <li><a class="dropdown-item" href="{{ route('venues.index') }}"><i class="bi bi-buildings me-2"></i>Manage Venues</a></li>
+                                <li><a class="dropdown-item" href="{{ route('events.index') }}"><i class="bi bi-calendar-event me-2"></i>Manage Events</a></li>
+                                <li><a class="dropdown-item" href="{{ route('tickets.index') }}"><i class="bi bi-ticket-perforated me-2"></i>Manage Tickets</a></li>
+                            </ul>
                         </li>
 
                         <!-- Вертикальна лінія-розділювач -->
-                        <li class="nav-item d-none d-lg-block mx-2">
+                        <li class="nav-item d-none d-lg-block mx-1">
                             <div class="vr text-white h-100 opacity-25"></div>
                         </li>
                     @endif
@@ -69,7 +72,7 @@
                         </a>
                     </li>
 
-                    <!-- Профіль (Випадаючий список) -->
+                    <!-- Профіль -->
                     <li class="nav-item dropdown ms-lg-3">
                         <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" data-bs-toggle="dropdown">
                             <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 35px; height: 35px;">

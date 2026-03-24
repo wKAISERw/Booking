@@ -50,53 +50,54 @@
                     </div>
                 </div>
             </div>
+        @endif
 
-            <!-- БЛОК 2: Особистий кабінет (Щоб адмін міг купувати квитки) -->
-            <h4 class="mb-4 fw-bold"><i class="bi bi-person-badge me-2"></i>Your Account & Shopping</h4>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="card border-0 shadow-sm card-hover h-100">
-                        <div class="card-body p-4 d-flex align-items-center gap-3">
-                            <div class="bg-info bg-opacity-10 text-info rounded p-3">
-                                <i class="bi bi-cart3 fs-3"></i>
-                            </div>
-                            <div>
-                                <h6 class="fw-bold mb-1">Your Cart</h6>
-                                <a href="{{ route('cart.index') }}" class="text-decoration-none small">Go to checkout &rarr;</a>
-                            </div>
+        <!-- БЛОК 2: Особистий кабінет (Для всіх авторизованих) -->
+        <h4 class="mb-4 fw-bold"><i class="bi bi-person-badge me-2"></i>Your Account & Shopping</h4>
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm card-hover h-100">
+                    <div class="card-body p-4 d-flex align-items-center gap-3">
+                        <div class="bg-info bg-opacity-10 text-info rounded p-3">
+                            <i class="bi bi-cart3 fs-3"></i>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card border-0 shadow-sm card-hover h-100">
-                        <div class="card-body p-4 d-flex align-items-center gap-3">
-                            <div class="bg-secondary bg-opacity-10 text-secondary rounded p-3">
-                                <i class="bi bi-clock-history fs-3"></i>
-                            </div>
-                            <div>
-                                <h6 class="fw-bold mb-1">Order History</h6>
-                                <a href="{{ route('orders.history') }}" class="text-decoration-none small">View past orders &rarr;</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card border-0 shadow-sm card-hover h-100">
-                        <div class="card-body p-4 d-flex align-items-center gap-3">
-                            <div class="bg-dark bg-opacity-10 text-dark rounded p-3">
-                                <i class="bi bi-person-gear fs-3"></i>
-                            </div>
-                            <div>
-                                <h6 class="fw-bold mb-1">Profile Settings</h6>
-                                <a href="{{ route('profile.edit') }}" class="text-decoration-none small">Edit profile &rarr;</a>
-                            </div>
+                        <div>
+                            <h6 class="fw-bold mb-1">Your Cart</h6>
+                            <a href="{{ route('cart.index') }}" class="text-decoration-none small">Go to checkout &rarr;</a>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm card-hover h-100">
+                    <div class="card-body p-4 d-flex align-items-center gap-3">
+                        <div class="bg-secondary bg-opacity-10 text-secondary rounded p-3">
+                            <i class="bi bi-clock-history fs-3"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-1">Order History</h6>
+                            <a href="{{ route('orders.history') }}" class="text-decoration-none small">View past orders &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm card-hover h-100">
+                    <div class="card-body p-4 d-flex align-items-center gap-3">
+                        <div class="bg-dark bg-opacity-10 text-dark rounded p-3">
+                            <i class="bi bi-person-gear fs-3"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-1">Profile Settings</h6>
+                            <a href="{{ route('profile.edit') }}" class="text-decoration-none small">Edit profile &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        @else
-            <!-- Звичайний користувач -->
+        @if(!Auth::user()->hasRole('admin'))
+            <!-- БЛОК 3: Дослідження (Тільки для звичайного юзера) -->
             <h4 class="mb-4 fw-bold"><i class="bi bi-compass me-2"></i>Explore</h4>
             <div class="row g-4">
                 <div class="col-md-6">
