@@ -1,96 +1,112 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container my-5">
-        <h1 class="text-center mb-4">Available Tickets</h1>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="fw-bold mb-0">Available Tickets</h1>
+    </div>
 
-        <div class="row">
-            <!-- Секція фільтрів -->
-            <div class="col-md-3">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-light">
-                        <strong>Filters</strong>
-                    </div>
-                    <div class="card-body">
-                        <form method="GET" action="{{ route('tickets.index') }}">
-                            <!-- Пошук -->
-                            <div class="mb-4">
-                                <label for="search" class="form-label">Search by Name</label>
-                                <input type="text" name="search" id="search" class="form-control" placeholder="Type to search..." value="{{ request('search') }}">
-                            </div>
-
-                            <!-- Фільтр за ціною -->
-                            <div class="mb-4">
-                                <label for="price-range" class="form-label">Price</label>
-                                <div class="input-group">
-                                    <input type="number" name="min_price" class="form-control" placeholder="From" value="{{ request('min_price') }}">
-                                    <input type="number" name="max_price" class="form-control" placeholder="To" value="{{ request('max_price') }}">
-                                </div>
-                            </div>
-
-                            <!-- Фільтр за подією -->
-                            <div class="mb-4">
-                                <label for="event" class="form-label">Event</label>
-                                <div class="form-group">
-                                    <div class="form-check">
-                                        @foreach($events as $event)
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="event_id[]" value="{{ $event->id }}" {{ request('event_id') && in_array($event->id, request('event_id')) ? 'checked' : '' }}>
-                                                <label class="form-check-label">
-                                                    {{ $event->name }} ({{ $event->tickets_count }})
-                                                </label>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Сортування -->
-                            <div class="mb-4">
-                                <label for="sort" class="form-label">Sort by Price</label>
-                                <select name="sort" id="sort" class="form-control">
-                                    <option value="" {{ request('sort') == '' ? 'selected' : '' }}>Default</option>
-                                    <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Price: Low to High</option>
-                                    <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Price: High to Low</option>
-                                </select>
-                            </div>
-
-                            <!-- Кнопка застосування фільтрів -->
-                            <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
-                        </form>
-                    </div>
+    <div class="row g-4">
+        <!-- Sidebar Filters -->
+        <div class="col-lg-3">
+            <div class="card border-0 shadow-sm sticky-top" style="top: 80px; z-index: 1;">
+                <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
+                    <h5 class="fw-bold mb-0"><i class="bi bi-funnel me-2"></i>Filters</h5>
                 </div>
-            </div>
-
-            <!-- Секція результатів -->
-            <div class="col-md-9">
-                <div class="row">
-                    @foreach ($tickets as $ticket)
-                        <div class="col-md-4 mb-4">
-                            <div class="card h-100 shadow-lg border-0">
-                                @if ($ticket->event->image)
-                                    <img src="{{ asset('storage/' . $ticket->event->image) }}" alt="{{ $ticket->event->name }}" class="card-img-top" style="height: 200px; object-fit: cover;">
-                                @else
-                                    <img src="https://via.placeholder.com/300x200" alt="No Image" class="card-img-top" style="height: 200px; object-fit: cover;">
-                                @endif
-                                <div class="card-body">
-                                    <h5 class="card-title text-truncate">{{ $ticket->type }}</h5>
-                                    <p class="mb-1 text-muted"><strong>Event:</strong> {{ $ticket->event->name }}</p>
-                                    <p class="mb-1 text-muted"><strong>Date:</strong> {{ $ticket->event->date }}</p>
-                                    <p class="mb-1 text-muted"><strong>Price:</strong> ${{ number_format($ticket->price, 2) }}</p>
-                                    <p class="mb-1 text-muted"><strong>Available:</strong> {{ $ticket->quantity }}</p>
-                                </div>
-                                <div class="card-footer d-flex justify-content-between align-items-center bg-white">
-                                    <a href="{{ route('cart.showAddForm', $ticket->id) }}" class="btn btn-sm btn-success">Add to Cart</a>
-                                    <a href="{{ route('tickets.show', $ticket->id) }}" class="btn btn-sm btn-primary">More Details</a>
-                                </div>
+                <div class="card-body">
+                    <form method="GET" action="{{ route('tickets.index') }}">
+                        <div class="mb-3">
+                            <label for="search" class="form-label text-muted small fw-bold text-uppercase">Search</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+                                <input type="text" name="search" id="search" class="form-control border-start-0 ps-0" placeholder="Ticket name..." value="{{ request('search') }}">
                             </div>
                         </div>
-                    @endforeach
+
+                        <div class="mb-3">
+                            <label class="form-label text-muted small fw-bold text-uppercase">Price Range</label>
+                            <div class="d-flex gap-2">
+                                <input type="number" name="min_price" class="form-control" placeholder="Min $" value="{{ request('min_price') }}">
+                                <input type="number" name="max_price" class="form-control" placeholder="Max $" value="{{ request('max_price') }}">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label text-muted small fw-bold text-uppercase">Events</label>
+                            <div class="border rounded p-3 bg-light" style="max-height: 200px; overflow-y: auto;">
+                                @foreach($events as $event)
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="event_id[]" id="event_{{ $event->id }}" value="{{ $event->id }}" {{ request('event_id') && in_array($event->id, request('event_id')) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="event_{{ $event->id }}">
+                                            {{ $event->name }} <span class="badge bg-secondary rounded-pill">{{ $event->tickets_count }}</span>
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="sort" class="form-label text-muted small fw-bold text-uppercase">Sort By</label>
+                            <select name="sort" id="sort" class="form-select">
+                                <option value="" {{ request('sort') == '' ? 'selected' : '' }}>Default</option>
+                                <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Price: Low to High</option>
+                                <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Price: High to Low</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+                        @if(request()->anyFilled(['search', 'min_price', 'max_price', 'event_id', 'sort']))
+                            <a href="{{ route('tickets.index') }}" class="btn btn-link text-decoration-none w-100 mt-2 text-muted">Clear Filters</a>
+                        @endif
+                    </form>
                 </div>
-                <div class="d-flex justify-content-center">
-                    {{ $tickets->links() }}
-                </div>
+            </div>
+        </div>
+
+        <!-- Results -->
+        <div class="col-lg-9">
+            <div class="row g-4">
+                @forelse ($tickets as $ticket)
+                    <div class="col-md-6 col-xl-4">
+                        <div class="card h-100 border-0 shadow-sm card-hover overflow-hidden">
+                            <div class="position-relative">
+                                @if ($ticket->event->image)
+                                    <img src="{{ asset('storage/' . $ticket->event->image) }}" alt="{{ $ticket->event->name }}" class="card-img-top object-fit-cover" style="height: 180px;">
+                                @else
+                                    <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 180px;">
+                                        <i class="bi bi-image fs-1 opacity-50"></i>
+                                    </div>
+                                @endif
+                                <div class="position-absolute top-0 end-0 m-2">
+                                    <span class="badge bg-primary fs-6 shadow-sm">${{ number_format($ticket->price, 2) }}</span>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold text-truncate mb-1">{{ $ticket->type }}</h5>
+                                <p class="text-primary small fw-semibold mb-3">{{ $ticket->event->name }}</p>
+
+                                <div class="d-flex align-items-center text-muted small mb-2">
+                                    <i class="bi bi-calendar3 me-2"></i> {{ \Carbon\Carbon::parse($ticket->event->date)->format('M d, Y H:i') }}
+                                </div>
+                                <div class="d-flex align-items-center text-muted small">
+                                    <i class="bi bi-ticket-fill me-2"></i> {{ $ticket->quantity }} available
+                                </div>
+                            </div>
+                            <div class="card-footer bg-white border-top-0 d-flex gap-2 p-3">
+                                <a href="{{ route('cart.showAddForm', $ticket->id) }}" class="btn btn-success flex-grow-1"><i class="bi bi-cart-plus me-1"></i> Add</a>
+                                <a href="{{ route('tickets.show', $ticket->id) }}" class="btn btn-outline-secondary px-3" title="Details"><i class="bi bi-info-circle"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <div class="col-12 text-center py-5">
+                        <i class="bi bi-search fs-1 text-muted mb-3"></i>
+                        <h4 class="fw-bold text-muted">No tickets found</h4>
+                        <p>Try adjusting your filters.</p>
+                    </div>
+                @endforelse
+            </div>
+            <div class="mt-4 d-flex justify-content-center">
+                {{ $tickets->links() }}
             </div>
         </div>
     </div>

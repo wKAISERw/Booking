@@ -5,95 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Ticket Booking') }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
 
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <!-- Bootstrap 5 CSS & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <style>
+        body { font-family: 'Figtree', sans-serif; background-color: #f8f9fa; color: #333; }
+        .card { border-radius: 16px; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important; }
+        .btn { border-radius: 8px; font-weight: 500; padding: 0.5rem 1.25rem; }
+        .btn-primary { background-color: #4f46e5; border-color: #4f46e5; }
+        .btn-primary:hover { background-color: #4338ca; border-color: #4338ca; }
+        .form-control, .form-select { border-radius: 8px; padding: 0.75rem 1rem; border-color: #e5e7eb; }
+        .form-control:focus, .form-select:focus { border-color: #4f46e5; box-shadow: 0 0 0 0.25rem rgba(79, 70, 229, 0.25); }
+        .object-fit-cover { object-fit: cover; }
+        .collapse { visibility: visible !important; }
+    </style>
 </head>
-<body class="font-sans antialiased">
-<div class="container-fluid bg-light min-vh-100 d-flex flex-column">
-    <!-- Navigation -->
-    @include('layouts.navigation')
+<body class="antialiased d-flex flex-column min-vh-100">
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+<!-- Navigation -->
+@include('layouts.navigation')
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <!-- Навігаційні посилання -->
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    @auth
-                        @if(auth()->user()->hasRole('admin'))
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('venues.index') }}">Manage Venues</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('events.index') }}">Manage Events</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('tickets.index') }}">Manage Tickets</a>
-                            </li>
-                        @endif
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('cart.index') }}">Cart</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('orders.history') }}">Order History</a>
-                        </li>
-                    @else
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">Login</a>
-                        </li>
-                        @if (Route::has('register'))
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('register') }}">Register</a>
-                            </li>
-                        @endif
-                    @endauth
-                </ul>
-
-                <!-- Authentication -->
-                @auth
-                    <form method="POST" action="{{ route('logout') }}" class="d-inline">
-                        @csrf
-                        <button type="submit" class="btn btn-outline-danger">Logout</button>
-                    </form>
-                @endauth
-            </div>
+@isset($header)
+    <header class="bg-white shadow-sm mb-4">
+        <div class="container py-3">
+            <h4 class="mb-0 fw-bold text-dark">{{ $header }}</h4>
         </div>
-    </nav>
+    </header>
+@endisset
 
-    <!-- Page Heading -->
-    @isset($header)
-        <header class="bg-white shadow my-4">
-            <div class="container">
-                <div class="py-3">
-                    {{ $header }}
-                </div>
-            </div>
-        </header>
-    @endisset
+<main class="container my-5 flex-grow-1">
+    @yield('content')
+</main>
 
-    <!-- Page Content -->
-    <main class="container my-4">
-        @yield('content')
-    </main>
-</div>
+<footer class="bg-white border-top py-4 mt-auto">
+    <div class="container text-center text-muted">
+        <small>&copy; {{ date('Y') }} {{ config('app.name', 'Ticket Booking') }}. All rights reserved.</small>
+    </div>
+</footer>
 
-<!-- Bootstrap JS and dependencies -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap 5 JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

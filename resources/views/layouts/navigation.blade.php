@@ -1,154 +1,107 @@
-<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
-    <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex">
-                <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm sticky-top py-3">
+    <div class="container">
+        <!-- Логотип -->
+        <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="{{ route('dashboard') }}">
+            <i class="bi bi-ticket-perforated-fill text-primary fs-3"></i>
+            <span>Ticket<span class="text-primary">Sys</span></span>
+        </a>
+
+        <!-- Кнопка для мобілок -->
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNavbar">
+            <!-- Публічні посилання (зліва) -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-1">
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('events.*') ? 'active fw-bold' : '' }}" href="{{ route('events.index') }}">
+                        <i class="bi bi-calendar-event me-1"></i> Events
                     </a>
-                </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('venues.*') ? 'active fw-bold' : '' }}" href="{{ route('venues.index') }}">
+                        <i class="bi bi-buildings me-1"></i> Venues
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('tickets.*') ? 'active fw-bold' : '' }}" href="{{ route('tickets.index') }}">
+                        <i class="bi bi-ticket-detailed me-1"></i> Tickets
+                    </a>
+                </li>
+            </ul>
 
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('tickets.index')" :active="request()->routeIs('tickets.index')">
-                        {{ __('Tickets') }}
-                    </x-nav-link>
-                    @auth
-                        @if(auth()->user()->hasRole('admin'))
-                            <x-nav-link :href="route('venues.index')" :active="request()->routeIs('venues.index')">
-                                {{ __('Manage Venues') }}
-                            </x-nav-link>
-                            <x-nav-link :href="route('events.index')" :active="request()->routeIs('events.index')">
-                                {{ __('Manage Events') }}
-                            </x-nav-link>
-                            <x-nav-link :href="route('tickets.index')" :active="request()->routeIs('tickets.index')">
-                                {{ __('Manage Tickets') }}
-                            </x-nav-link>
-                        @endif
-                        <x-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')">
-                            {{ __('Cart') }}
-                        </x-nav-link>
-                        <x-nav-link :href="route('orders.history')" :active="request()->routeIs('orders.history')">
-                            {{ __('Order History') }}
-                        </x-nav-link>
-                    @endauth
-                </div>
-            </div>
-
-            <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
+            <!-- Користувацькі та Адмінські посилання (справа) -->
+            <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
                 @auth
-                    <x-dropdown align="right" width="48">
-                        <x-slot name="trigger">
-                            <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                                <div>{{ Auth::user()->name }}</div>
+                    <!-- Швидкі посилання для Адміна (без випадаючого списку) -->
+                    @if(auth()->user()->hasRole('admin'))
+                        <li class="nav-item d-none d-lg-block">
+                            <span class="nav-link text-warning fw-bold px-0"><i class="bi bi-shield-lock me-1"></i>Admin:</span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-warning {{ request()->routeIs('venues.index') ? 'active' : '' }}" href="{{ route('venues.index') }}">Venues</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-warning {{ request()->routeIs('events.index') ? 'active' : '' }}" href="{{ route('events.index') }}">Events</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-warning {{ request()->routeIs('tickets.index') ? 'active' : '' }}" href="{{ route('tickets.index') }}">Tickets</a>
+                        </li>
 
-                                <div class="ms-1">
-                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                    </svg>
-                                </div>
-                            </button>
-                        </x-slot>
+                        <!-- Вертикальна лінія-розділювач -->
+                        <li class="nav-item d-none d-lg-block mx-2">
+                            <div class="vr text-white h-100 opacity-25"></div>
+                        </li>
+                    @endif
 
-                        <x-slot name="content">
-                            <x-dropdown-link :href="route('profile.edit')">
-                                {{ __('Profile') }}
-                            </x-dropdown-link>
+                    <!-- Корзина та Замовлення -->
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('cart.*') ? 'active text-primary fw-bold' : '' }}" href="{{ route('cart.index') }}">
+                            <i class="bi bi-cart3 fs-5"></i>
+                            <span class="d-lg-none ms-2">Cart</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('orders.*') ? 'active text-primary fw-bold' : '' }}" href="{{ route('orders.history') }}">
+                            <i class="bi bi-clock-history fs-5"></i>
+                            <span class="d-lg-none ms-2">Orders</span>
+                        </a>
+                    </li>
 
-                            <!-- Authentication -->
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-
-                                <x-dropdown-link :href="route('logout')"
-                                                 onclick="event.preventDefault();
-                                                    this.closest('form').submit();">
-                                    {{ __('Log Out') }}
-                                </x-dropdown-link>
-                            </form>
-                        </x-slot>
-                    </x-dropdown>
+                    <!-- Профіль (Випадаючий список) -->
+                    <li class="nav-item dropdown ms-lg-3">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" data-bs-toggle="dropdown">
+                            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 35px; height: 35px;">
+                                {{ substr(Auth::user()->name, 0, 1) }}
+                            </div>
+                            <span class="d-lg-none">{{ Auth::user()->name }}</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+                            <li><h6 class="dropdown-header text-truncate">{{ Auth::user()->email }}</h6></li>
+                            <li><a class="dropdown-item" href="{{ route('profile.edit') }}"><i class="bi bi-person-gear me-2"></i> Profile</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item text-danger fw-semibold">
+                                        <i class="bi bi-box-arrow-right me-2"></i> Log Out
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
                 @else
-                    <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a>
-
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('login') }}">Log in</a>
+                    </li>
                     @if (Route::has('register'))
-                        <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Register</a>
+                        <li class="nav-item ms-lg-2">
+                            <a class="btn btn-primary px-4 rounded-pill" href="{{ route('register') }}">Register</a>
+                        </li>
                     @endif
                 @endauth
-            </div>
-
-            <!-- Hamburger -->
-            <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
+            </ul>
         </div>
-    </div>
-
-    <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('tickets.index')" :active="request()->routeIs('tickets.index')">
-                {{ __('Tickets') }}
-            </x-responsive-nav-link>
-            @auth
-                @if(auth()->user()->hasRole('admin'))
-                    <x-responsive-nav-link :href="route('venues.index')" :active="request()->routeIs('venues.index')">
-                        {{ __('Manage Venues') }}
-                    </x-responsive-nav-link>
-                    <x-responsive-nav-link :href="route('events.index')" :active="request()->routeIs('events.index')">
-                        {{ __('Manage Events') }}
-                    </x-responsive-nav-link>
-                    <x-responsive-nav-link :href="route('tickets.index')" :active="request()->routeIs('tickets.index')">
-                        {{ __('Manage Tickets') }}
-                    </x-responsive-nav-link>
-                @endif
-                <x-responsive-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')">
-                    {{ __('Cart') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('orders.history')" :active="request()->routeIs('orders.history')">
-                    {{ __('Order History') }}
-                </x-responsive-nav-link>
-            @endauth
-        </div>
-
-        <!-- Responsive Settings Options -->
-        @auth
-            <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
-                <div class="px-4">
-                    <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
-                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-                </div>
-
-                <div class="mt-3 space-y-1">
-                    <x-responsive-nav-link :href="route('profile.edit')">
-                        {{ __('Profile') }}
-                    </x-responsive-nav-link>
-
-                    <!-- Authentication -->
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-
-                        <x-responsive-nav-link :href="route('logout')"
-                                               onclick="event.preventDefault();
-                                            this.closest('form').submit();">
-                            {{ __('Log Out') }}
-                        </x-responsive-nav-link>
-                    </form>
-                </div>
-            </div>
-        @endauth
     </div>
 </nav>

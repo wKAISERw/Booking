@@ -3,7 +3,6 @@
 @section('content')
     <h1>Events</h1>
 
-    <!-- Кнопка для створення нового запису (тільки для адмінів) -->
     @can('create', App\Models\Event::class)
         <a href="{{ route('events.create') }}" class="btn btn-primary mb-3">Create New Event</a>
     @endcan
@@ -22,10 +21,9 @@
                         <p>{{ Str::limit($event->description, 100) }}</p>
                         <p><strong>Date:</strong> {{ $event->date }}</p>
                         <p><strong>Venue:</strong> {{ $event->venue->name }}</p>
-                        
+
                         <a href="{{ route('events.show', $event) }}" class="btn btn-primary">View Details</a>
 
-                        <!-- Дії доступні лише для адмінів -->
                         @can('update', $event)
                             <a href="{{ route('events.edit', $event) }}" class="btn btn-warning">Edit</a>
                         @endcan

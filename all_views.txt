@@ -1,0 +1,1957 @@
+============================================================
+FILE: resources/views/auth/confirm-password.blade.php
+============================================================
+<x-guest-layout>
+    <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
+        {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
+    </div>
+
+    <form method="POST" action="{{ route('password.confirm') }}">
+        @csrf
+
+        <!-- Password -->
+        <div>
+            <x-input-label for="password" :value="__('Password')" />
+
+            <x-text-input id="password" class="block mt-1 w-full"
+                            type="password"
+                            name="password"
+                            required autocomplete="current-password" />
+
+            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        </div>
+
+        <div class="flex justify-end mt-4">
+            <x-primary-button>
+                {{ __('Confirm') }}
+            </x-primary-button>
+        </div>
+    </form>
+</x-guest-layout>
+
+
+============================================================
+FILE: resources/views/auth/forgot-password.blade.php
+============================================================
+<x-guest-layout>
+    <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
+        {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+    </div>
+
+    <!-- Session Status -->
+    <x-auth-session-status class="mb-4" :status="session('status')" />
+
+    <form method="POST" action="{{ route('password.email') }}">
+        @csrf
+
+        <!-- Email Address -->
+        <div>
+            <x-input-label for="email" :value="__('Email')" />
+            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
+            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        </div>
+
+        <div class="flex items-center justify-end mt-4">
+            <x-primary-button>
+                {{ __('Email Password Reset Link') }}
+            </x-primary-button>
+        </div>
+    </form>
+</x-guest-layout>
+
+
+============================================================
+FILE: resources/views/auth/login.blade.php
+============================================================
+<x-guest-layout>
+    <!-- Session Status -->
+    <x-auth-session-status class="mb-4" :status="session('status')" />
+
+    <form method="POST" action="{{ route('login') }}">
+        @csrf
+
+        <!-- Email Address -->
+        <div>
+            <x-input-label for="email" :value="__('Email')" />
+            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
+            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        </div>
+
+        <!-- Password -->
+        <div class="mt-4">
+            <x-input-label for="password" :value="__('Password')" />
+
+            <x-text-input id="password" class="block mt-1 w-full"
+                            type="password"
+                            name="password"
+                            required autocomplete="current-password" />
+
+            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        </div>
+
+        <!-- Remember Me -->
+        <div class="block mt-4">
+            <label for="remember_me" class="inline-flex items-center">
+                <input id="remember_me" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" name="remember">
+                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
+            </label>
+        </div>
+
+        <div class="flex items-center justify-end mt-4">
+            @if (Route::has('password.request'))
+                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
+                    {{ __('Forgot your password?') }}
+                </a>
+            @endif
+
+            <x-primary-button class="ms-3">
+                {{ __('Log in') }}
+            </x-primary-button>
+        </div>
+    </form>
+</x-guest-layout>
+
+
+============================================================
+FILE: resources/views/auth/register.blade.php
+============================================================
+<x-guest-layout>
+    <form method="POST" action="{{ route('register') }}">
+        @csrf
+
+        <!-- Name -->
+        <div>
+            <x-input-label for="name" :value="__('Name')" />
+            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
+            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+        </div>
+
+        <!-- Email Address -->
+        <div class="mt-4">
+            <x-input-label for="email" :value="__('Email')" />
+            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
+            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        </div>
+
+        <!-- Password -->
+        <div class="mt-4">
+            <x-input-label for="password" :value="__('Password')" />
+
+            <x-text-input id="password" class="block mt-1 w-full"
+                            type="password"
+                            name="password"
+                            required autocomplete="new-password" />
+
+            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="mt-4">
+            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+
+            <x-text-input id="password_confirmation" class="block mt-1 w-full"
+                            type="password"
+                            name="password_confirmation" required autocomplete="new-password" />
+
+            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+        </div>
+
+        <div class="flex items-center justify-end mt-4">
+            <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login') }}">
+                {{ __('Already registered?') }}
+            </a>
+
+            <x-primary-button class="ms-4">
+                {{ __('Register') }}
+            </x-primary-button>
+        </div>
+    </form>
+</x-guest-layout>
+
+
+============================================================
+FILE: resources/views/auth/reset-password.blade.php
+============================================================
+<x-guest-layout>
+    <form method="POST" action="{{ route('password.store') }}">
+        @csrf
+
+        <!-- Password Reset Token -->
+        <input type="hidden" name="token" value="{{ $request->route('token') }}">
+
+        <!-- Email Address -->
+        <div>
+            <x-input-label for="email" :value="__('Email')" />
+            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus autocomplete="username" />
+            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        </div>
+
+        <!-- Password -->
+        <div class="mt-4">
+            <x-input-label for="password" :value="__('Password')" />
+            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
+            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="mt-4">
+            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+
+            <x-text-input id="password_confirmation" class="block mt-1 w-full"
+                                type="password"
+                                name="password_confirmation" required autocomplete="new-password" />
+
+            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+        </div>
+
+        <div class="flex items-center justify-end mt-4">
+            <x-primary-button>
+                {{ __('Reset Password') }}
+            </x-primary-button>
+        </div>
+    </form>
+</x-guest-layout>
+
+
+============================================================
+FILE: resources/views/auth/verify-email.blade.php
+============================================================
+<x-guest-layout>
+    <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
+        {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
+    </div>
+
+    @if (session('status') == 'verification-link-sent')
+        <div class="mb-4 font-medium text-sm text-green-600 dark:text-green-400">
+            {{ __('A new verification link has been sent to the email address you provided during registration.') }}
+        </div>
+    @endif
+
+    <div class="mt-4 flex items-center justify-between">
+        <form method="POST" action="{{ route('verification.send') }}">
+            @csrf
+
+            <div>
+                <x-primary-button>
+                    {{ __('Resend Verification Email') }}
+                </x-primary-button>
+            </div>
+        </form>
+
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+
+            <button type="submit" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
+                {{ __('Log Out') }}
+            </button>
+        </form>
+    </div>
+</x-guest-layout>
+
+
+============================================================
+FILE: resources/views/cart/add.blade.php
+============================================================
+@extends('layouts.app')
+
+@section('content')
+    <div class="container my-5">
+        <h1 class="text-center mb-4">Add Ticket to Cart</h1>
+        <div class="card mx-auto" style="max-width: 500px;">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">{{ $ticket->type }}</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Event:</strong> {{ $ticket->event->name }}</p>
+                <p><strong>Date:</strong> {{ $ticket->event->date }}</p>
+                <p><strong>Price:</strong> ${{ number_format($ticket->price, 2) }}</p>
+                <p><strong>Available:</strong> {{ $ticket->quantity }}</p>
+                <hr>
+                <form action="{{ route('cart.add', $ticket->id) }}" method="POST">
+                    @csrf
+                    <div class="form-group">
+                        <label for="quantity">Quantity</label>
+                        <input type="number" name="quantity" id="quantity" class="form-control @error('quantity') is-invalid @enderror" 
+                               value="1" min="1" max="{{ $ticket->quantity }}" required>
+                        @error('quantity')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <button type="submit" class="btn btn-success btn-block mt-3">Add to Cart</button>
+                </form>
+            </div>
+            <div class="card-footer text-center">
+                <a href="{{ route('tickets.index') }}" class="btn btn-secondary">Back to Tickets</a>
+            </div>
+        </div>
+    </div>
+@endsection
+
+
+============================================================
+FILE: resources/views/cart/index.blade.php
+============================================================
+@extends('layouts.app')
+
+@section('content')
+    <div class="container my-5">
+        <h1 class="text-center mb-4">Your Cart</h1>
+        @if ($cart->tickets->isEmpty())
+            <div class="alert alert-info text-center">
+                Your cart is empty. <a href="{{ route('tickets.index') }}" class="alert-link">Browse tickets</a>.
+            </div>
+        @else
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-dark text-center">
+                        <tr>
+                            <th>Image</th>
+                            <th>Event</th>
+                            <th>Type</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php $totalPrice = 0; @endphp
+                        @foreach ($cart->tickets as $ticket)
+                            @php
+                                $subtotal = $ticket->price * $ticket->pivot->quantity;
+                                $totalPrice += $subtotal;
+                            @endphp
+                            <tr>
+                                <td class="text-center">
+                                    @if ($ticket->event->image)
+                                        <img src="{{ asset('storage/' . $ticket->event->image) }}" alt="{{ $ticket->event->name }}" class="img-fluid" style="max-width: 80px; max-height: 80px; object-fit: cover;">
+                                    @else
+                                        <img src="https://via.placeholder.com/80" alt="No Image" class="img-fluid">
+                                    @endif
+                                </td>
+                                <td class="text-center">
+                                    <strong>{{ $ticket->event->name }}</strong><br>
+                                    <small>{{ $ticket->event->date }}</small>
+                                </td>
+                                <td class="text-center">{{ $ticket->type }}</td>
+                                <td class="text-center">${{ number_format($ticket->price, 2) }}</td>
+                                <td class="text-center">{{ $ticket->pivot->quantity }}</td>
+                                <td class="text-center">${{ number_format($subtotal, 2) }}</td>
+                                <td class="text-center">
+                                    <form action="{{ route('cart.remove', $ticket->id) }}" method="POST" class="d-inline-block">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to remove this ticket?')">Remove</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                        <tr>
+                            <td colspan="5" class="text-right font-weight-bold">Total:</td>
+                            <td class="text-center font-weight-bold">${{ number_format($totalPrice, 2) }}</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-center mt-4">
+                <a href="{{ route('orders.confirm') }}" class="btn btn-primary btn-lg">Proceed to Order</a>
+                <a href="{{ route('tickets.index') }}" class="btn btn-outline-secondary btn-lg">Continue Shopping</a>
+            </div>
+        @endif
+    </div>
+@endsection
+
+
+============================================================
+FILE: resources/views/components/application-logo.blade.php
+============================================================
+<svg viewBox="0 0 316 316" xmlns="http://www.w3.org/2000/svg" {{ $attributes }}>
+    <path d="M305.8 81.125C305.77 80.995 305.69 80.885 305.65 80.755C305.56 80.525 305.49 80.285 305.37 80.075C305.29 79.935 305.17 79.815 305.07 79.685C304.94 79.515 304.83 79.325 304.68 79.175C304.55 79.045 304.39 78.955 304.25 78.845C304.09 78.715 303.95 78.575 303.77 78.475L251.32 48.275C249.97 47.495 248.31 47.495 246.96 48.275L194.51 78.475C194.33 78.575 194.19 78.725 194.03 78.845C193.89 78.955 193.73 79.045 193.6 79.175C193.45 79.325 193.34 79.515 193.21 79.685C193.11 79.815 192.99 79.935 192.91 80.075C192.79 80.285 192.71 80.525 192.63 80.755C192.58 80.875 192.51 80.995 192.48 81.125C192.38 81.495 192.33 81.875 192.33 82.265V139.625L148.62 164.795V52.575C148.62 52.185 148.57 51.805 148.47 51.435C148.44 51.305 148.36 51.195 148.32 51.065C148.23 50.835 148.16 50.595 148.04 50.385C147.96 50.245 147.84 50.125 147.74 49.995C147.61 49.825 147.5 49.635 147.35 49.485C147.22 49.355 147.06 49.265 146.92 49.155C146.76 49.025 146.62 48.885 146.44 48.785L93.99 18.585C92.64 17.805 90.98 17.805 89.63 18.585L37.18 48.785C37 48.885 36.86 49.035 36.7 49.155C36.56 49.265 36.4 49.355 36.27 49.485C36.12 49.635 36.01 49.825 35.88 49.995C35.78 50.125 35.66 50.245 35.58 50.385C35.46 50.595 35.38 50.835 35.3 51.065C35.25 51.185 35.18 51.305 35.15 51.435C35.05 51.805 35 52.185 35 52.575V232.235C35 233.795 35.84 235.245 37.19 236.025L142.1 296.425C142.33 296.555 142.58 296.635 142.82 296.725C142.93 296.765 143.04 296.835 143.16 296.865C143.53 296.965 143.9 297.015 144.28 297.015C144.66 297.015 145.03 296.965 145.4 296.865C145.5 296.835 145.59 296.775 145.69 296.745C145.95 296.655 146.21 296.565 146.45 296.435L251.36 236.035C252.72 235.255 253.55 233.815 253.55 232.245V174.885L303.81 145.945C305.17 145.165 306 143.725 306 142.155V82.265C305.95 81.875 305.89 81.495 305.8 81.125ZM144.2 227.205L100.57 202.515L146.39 176.135L196.66 147.195L240.33 172.335L208.29 190.625L144.2 227.205ZM244.75 114.995V164.795L226.39 154.225L201.03 139.625V89.825L219.39 100.395L244.75 114.995ZM249.12 57.105L292.81 82.265L249.12 107.425L205.43 82.265L249.12 57.105ZM114.49 184.425L96.13 194.995V85.305L121.49 70.705L139.85 60.135V169.815L114.49 184.425ZM91.76 27.425L135.45 52.585L91.76 77.745L48.07 52.585L91.76 27.425ZM43.67 60.135L62.03 70.705L87.39 85.305V202.545V202.555V202.565C87.39 202.735 87.44 202.895 87.46 203.055C87.49 203.265 87.49 203.485 87.55 203.695V203.705C87.6 203.875 87.69 204.035 87.76 204.195C87.84 204.375 87.89 204.575 87.99 204.745C87.99 204.745 87.99 204.755 88 204.755C88.09 204.905 88.22 205.035 88.33 205.175C88.45 205.335 88.55 205.495 88.69 205.635L88.7 205.645C88.82 205.765 88.98 205.855 89.12 205.965C89.28 206.085 89.42 206.225 89.59 206.325C89.6 206.325 89.6 206.325 89.61 206.335C89.62 206.335 89.62 206.345 89.63 206.345L139.87 234.775V285.065L43.67 229.705V60.135ZM244.75 229.705L148.58 285.075V234.775L219.8 194.115L244.75 179.875V229.705ZM297.2 139.625L253.49 164.795V114.995L278.85 100.395L297.21 89.825V139.625H297.2Z"/>
+</svg>
+
+
+============================================================
+FILE: resources/views/components/auth-session-status.blade.php
+============================================================
+@props(['status'])
+
+@if ($status)
+    <div {{ $attributes->merge(['class' => 'font-medium text-sm text-green-600 dark:text-green-400']) }}>
+        {{ $status }}
+    </div>
+@endif
+
+
+============================================================
+FILE: resources/views/components/danger-button.blade.php
+============================================================
+<button {{ $attributes->merge(['type' => 'submit', 'class' => 'inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150']) }}>
+    {{ $slot }}
+</button>
+
+
+============================================================
+FILE: resources/views/components/dropdown-link.blade.php
+============================================================
+<a {{ $attributes->merge(['class' => 'block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out']) }}>{{ $slot }}</a>
+
+
+============================================================
+FILE: resources/views/components/dropdown.blade.php
+============================================================
+@props(['align' => 'right', 'width' => '48', 'contentClasses' => 'py-1 bg-white dark:bg-gray-700'])
+
+@php
+$alignmentClasses = match ($align) {
+    'left' => 'ltr:origin-top-left rtl:origin-top-right start-0',
+    'top' => 'origin-top',
+    default => 'ltr:origin-top-right rtl:origin-top-left end-0',
+};
+
+$width = match ($width) {
+    '48' => 'w-48',
+    default => $width,
+};
+@endphp
+
+<div class="relative" x-data="{ open: false }" @click.outside="open = false" @close.stop="open = false">
+    <div @click="open = ! open">
+        {{ $trigger }}
+    </div>
+
+    <div x-show="open"
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0 scale-95"
+            x-transition:enter-end="opacity-100 scale-100"
+            x-transition:leave="transition ease-in duration-75"
+            x-transition:leave-start="opacity-100 scale-100"
+            x-transition:leave-end="opacity-0 scale-95"
+            class="absolute z-50 mt-2 {{ $width }} rounded-md shadow-lg {{ $alignmentClasses }}"
+            style="display: none;"
+            @click="open = false">
+        <div class="rounded-md ring-1 ring-black ring-opacity-5 {{ $contentClasses }}">
+            {{ $content }}
+        </div>
+    </div>
+</div>
+
+
+============================================================
+FILE: resources/views/components/input-error.blade.php
+============================================================
+@props(['messages'])
+
+@if ($messages)
+    <ul {{ $attributes->merge(['class' => 'text-sm text-red-600 dark:text-red-400 space-y-1']) }}>
+        @foreach ((array) $messages as $message)
+            <li>{{ $message }}</li>
+        @endforeach
+    </ul>
+@endif
+
+
+============================================================
+FILE: resources/views/components/input-label.blade.php
+============================================================
+@props(['value'])
+
+<label {{ $attributes->merge(['class' => 'block font-medium text-sm text-gray-700 dark:text-gray-300']) }}>
+    {{ $value ?? $slot }}
+</label>
+
+
+============================================================
+FILE: resources/views/components/modal.blade.php
+============================================================
+@props([
+    'name',
+    'show' => false,
+    'maxWidth' => '2xl'
+])
+
+@php
+$maxWidth = [
+    'sm' => 'sm:max-w-sm',
+    'md' => 'sm:max-w-md',
+    'lg' => 'sm:max-w-lg',
+    'xl' => 'sm:max-w-xl',
+    '2xl' => 'sm:max-w-2xl',
+][$maxWidth];
+@endphp
+
+<div
+    x-data="{
+        show: @js($show),
+        focusables() {
+            // All focusable element types...
+            let selector = 'a, button, input:not([type=\'hidden\']), textarea, select, details, [tabindex]:not([tabindex=\'-1\'])'
+            return [...$el.querySelectorAll(selector)]
+                // All non-disabled elements...
+                .filter(el => ! el.hasAttribute('disabled'))
+        },
+        firstFocusable() { return this.focusables()[0] },
+        lastFocusable() { return this.focusables().slice(-1)[0] },
+        nextFocusable() { return this.focusables()[this.nextFocusableIndex()] || this.firstFocusable() },
+        prevFocusable() { return this.focusables()[this.prevFocusableIndex()] || this.lastFocusable() },
+        nextFocusableIndex() { return (this.focusables().indexOf(document.activeElement) + 1) % (this.focusables().length + 1) },
+        prevFocusableIndex() { return Math.max(0, this.focusables().indexOf(document.activeElement)) -1 },
+    }"
+    x-init="$watch('show', value => {
+        if (value) {
+            document.body.classList.add('overflow-y-hidden');
+            {{ $attributes->has('focusable') ? 'setTimeout(() => firstFocusable().focus(), 100)' : '' }}
+        } else {
+            document.body.classList.remove('overflow-y-hidden');
+        }
+    })"
+    x-on:open-modal.window="$event.detail == '{{ $name }}' ? show = true : null"
+    x-on:close-modal.window="$event.detail == '{{ $name }}' ? show = false : null"
+    x-on:close.stop="show = false"
+    x-on:keydown.escape.window="show = false"
+    x-on:keydown.tab.prevent="$event.shiftKey || nextFocusable().focus()"
+    x-on:keydown.shift.tab.prevent="prevFocusable().focus()"
+    x-show="show"
+    class="fixed inset-0 overflow-y-auto px-4 py-6 sm:px-0 z-50"
+    style="display: {{ $show ? 'block' : 'none' }};"
+>
+    <div
+        x-show="show"
+        class="fixed inset-0 transform transition-all"
+        x-on:click="show = false"
+        x-transition:enter="ease-out duration-300"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="ease-in duration-200"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+    >
+        <div class="absolute inset-0 bg-gray-500 dark:bg-gray-900 opacity-75"></div>
+    </div>
+
+    <div
+        x-show="show"
+        class="mb-6 bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full {{ $maxWidth }} sm:mx-auto"
+        x-transition:enter="ease-out duration-300"
+        x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+        x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+        x-transition:leave="ease-in duration-200"
+        x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+        x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+    >
+        {{ $slot }}
+    </div>
+</div>
+
+
+============================================================
+FILE: resources/views/components/nav-link.blade.php
+============================================================
+@props(['active'])
+
+@php
+$classes = ($active ?? false)
+            ? 'inline-flex items-center px-1 pt-1 border-b-2 border-indigo-400 dark:border-indigo-600 text-sm font-medium leading-5 text-gray-900 dark:text-gray-100 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out'
+            : 'inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-700 focus:outline-none focus:text-gray-700 dark:focus:text-gray-300 focus:border-gray-300 dark:focus:border-gray-700 transition duration-150 ease-in-out';
+@endphp
+
+<a {{ $attributes->merge(['class' => $classes]) }}>
+    {{ $slot }}
+</a>
+
+
+============================================================
+FILE: resources/views/components/primary-button.blade.php
+============================================================
+<button {{ $attributes->merge(['type' => 'submit', 'class' => 'inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150']) }}>
+    {{ $slot }}
+</button>
+
+
+============================================================
+FILE: resources/views/components/responsive-nav-link.blade.php
+============================================================
+@props(['active'])
+
+@php
+$classes = ($active ?? false)
+            ? 'block w-full ps-3 pe-4 py-2 border-l-4 border-indigo-400 dark:border-indigo-600 text-start text-base font-medium text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-900/50 focus:outline-none focus:text-indigo-800 dark:focus:text-indigo-200 focus:bg-indigo-100 dark:focus:bg-indigo-900 focus:border-indigo-700 dark:focus:border-indigo-300 transition duration-150 ease-in-out'
+            : 'block w-full ps-3 pe-4 py-2 border-l-4 border-transparent text-start text-base font-medium text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600 focus:outline-none focus:text-gray-800 dark:focus:text-gray-200 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-gray-300 dark:focus:border-gray-600 transition duration-150 ease-in-out';
+@endphp
+
+<a {{ $attributes->merge(['class' => $classes]) }}>
+    {{ $slot }}
+</a>
+
+
+============================================================
+FILE: resources/views/components/secondary-button.blade.php
+============================================================
+<button {{ $attributes->merge(['type' => 'button', 'class' => 'inline-flex items-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-500 rounded-md font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-25 transition ease-in-out duration-150']) }}>
+    {{ $slot }}
+</button>
+
+
+============================================================
+FILE: resources/views/components/text-input.blade.php
+============================================================
+@props(['disabled' => false])
+
+<input @disabled($disabled) {{ $attributes->merge(['class' => 'border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm']) }}>
+
+
+============================================================
+FILE: resources/views/dashboard.blade.php
+============================================================
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            {{ __('Dashboard') }}
+        </h2>
+    </x-slot>
+
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900 dark:text-gray-100">
+                    {{ __("You're logged in!") }}
+                </div>
+            </div>
+        </div>
+    </div>
+</x-app-layout>
+
+
+============================================================
+FILE: resources/views/events/create.blade.php
+============================================================
+@extends('layouts.app')
+
+@section('content')
+    <h1>Create New Event</h1>
+    <form action="{{ route('events.store') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}" required>
+            @error('name')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" required>{{ old('description') }}</textarea>
+            @error('description')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+        <div class="form-group">
+            <label for="date">Date</label>
+            <input type="datetime-local" class="form-control @error('date') is-invalid @enderror" id="date" name="date" value="{{ old('date') }}" required>
+            @error('date')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+        <div class="form-group">
+            <label for="venue_id">Venue</label>
+            <select class="form-control @error('venue_id') is-invalid @enderror" id="venue_id" name="venue_id" required>
+                @foreach($venues as $venue)
+                    <option value="{{ $venue->id }}" {{ old('venue_id') == $venue->id ? 'selected' : '' }}>{{ $venue->name }}</option>
+                @endforeach
+            </select>
+            @error('venue_id')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+        <div class="form-group">
+            <label for="image">Image</label>
+            <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image" accept="image/*">
+            @error('image')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+        <button type="submit" class="btn btn-primary">Create Event</button>
+    </form>
+@endsection
+
+
+============================================================
+FILE: resources/views/events/edit.blade.php
+============================================================
+@extends('layouts.app')
+
+@section('content')
+    <h1>Edit Event</h1>
+    <form action="{{ route('events.update', $event) }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        @method('PUT')
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name', $event->name) }}" required>
+            @error('name')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" required>{{ old('description', $event->description) }}</textarea>
+            @error('description')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+        <div class="form-group">
+            <label for="date">Date</label>
+            <input type="datetime-local" class="form-control @error('date') is-invalid @enderror" id="date" name="date" value="{{ old('date', $event->date) }}" required>
+            @error('date')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+        <div class="form-group">
+            <label for="venue_id">Venue</label>
+            <select class="form-control @error('venue_id') is-invalid @enderror" id="venue_id" name="venue_id" required>
+                @foreach($venues as $venue)
+                    <option value="{{ $venue->id }}" {{ old('venue_id', $event->venue_id) == $venue->id ? 'selected' : '' }}>{{ $venue->name }}</option>
+                @endforeach
+            </select>
+            @error('venue_id')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+        <div class="form-group">
+            <label for="image">Image</label>
+            <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image" accept="image/*">
+            @if($event->image)
+                <img src="{{ asset('storage/' . $event->image) }}" alt="{{ $event->name }}" class="img-thumbnail mt-2" width="150">
+            @endif
+            @error('image')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+        <button type="submit" class="btn btn-primary">Update Event</button>
+    </form>
+@endsection
+
+
+============================================================
+FILE: resources/views/events/index.blade.php
+============================================================
+@extends('layouts.app')
+
+@section('content')
+    <h1>Events</h1>
+
+    <!-- Кнопка для створення нового запису (тільки для адмінів) -->
+    @can('create', App\Models\Event::class)
+        <a href="{{ route('events.create') }}" class="btn btn-primary mb-3">Create New Event</a>
+    @endcan
+
+    <div class="row">
+        @foreach ($events as $event)
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    @if ($event->image)
+                        <img src="{{ asset('storage/' . $event->image) }}" class="card-img-top" alt="{{ $event->name }}">
+                    @else
+                        <img src="https://via.placeholder.com/150" class="card-img-top" alt="No Image">
+                    @endif
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $event->name }}</h5>
+                        <p>{{ Str::limit($event->description, 100) }}</p>
+                        <p><strong>Date:</strong> {{ $event->date }}</p>
+                        <p><strong>Venue:</strong> {{ $event->venue->name }}</p>
+                        
+                        <a href="{{ route('events.show', $event) }}" class="btn btn-primary">View Details</a>
+
+                        <!-- Дії доступні лише для адмінів -->
+                        @can('update', $event)
+                            <a href="{{ route('events.edit', $event) }}" class="btn btn-warning">Edit</a>
+                        @endcan
+
+                        @can('delete', $event)
+                            <form action="{{ route('events.destroy', $event) }}" method="POST" style="display: inline-block;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                            </form>
+                        @endcan
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+    <div class="d-flex justify-content-center">
+        {{ $events->links() }}
+    </div>
+@endsection
+
+
+============================================================
+FILE: resources/views/events/show.blade.php
+============================================================
+@extends('layouts.app')
+
+@section('content')
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <div class="card mb-4 shadow-sm">
+                    @if ($event->image)
+                        <img src="{{ asset('storage/' . $event->image) }}" class="card-img-top img-fluid" alt="{{ $event->name }}" style="height: 400px; object-fit: cover;">
+                    @else
+                        <img src="https://via.placeholder.com/800x400" class="card-img-top img-fluid" alt="No Image" style="height: 400px; object-fit: cover;">
+                    @endif
+                    <div class="card-body">
+                        <h1 class="card-title text-center">{{ $event->name }}</h1>
+                        <p class="text-muted text-center"><strong>Date:</strong> {{ $event->date }}</p>
+                        <div class="text-center">
+                            <p class="text-muted d-inline"><strong>Venue:</strong> {{ $event->venue->name }}</p>
+                            <a href="{{ route('venues.show', $event->venue) }}" class="btn btn-outline-primary btn-sm ml-2">View Venue Info</a>
+                        </div>
+                        <hr>
+                        <p class="text-justify">{{ $event->description }}</p>
+                    </div>
+                    <div class="card-footer text-center">
+                        <a href="{{ route('events.index') }}" class="btn btn-outline-secondary">Back to List</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+
+============================================================
+FILE: resources/views/home.blade.php
+============================================================
+@extends('layouts.app')
+
+@section('content')
+    <div class="container mt-4">
+        <h1>Welcome to Ticket Booking System</h1>
+
+        @auth
+            <p>Hello, {{ Auth::user()->name }}!</p>
+
+            @if(Auth::user()->hasRole('admin'))
+                <h2>Admin Dashboard</h2>
+                <div class="row mt-4">
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Manage Venues</h5>
+                                <a href="{{ route('venues.index') }}" class="btn btn-primary">View Venues</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Manage Events</h5>
+                                <a href="{{ route('events.index') }}" class="btn btn-primary">View Events</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Manage Tickets</h5>
+                                <a href="{{ route('tickets.index') }}" class="btn btn-primary">View Tickets</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @else
+                <h2>User Dashboard</h2>
+                <div class="row mt-4">
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Available Events</h5>
+                                <a href="{{ route('events.index') }}" class="btn btn-primary">View Events</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Available Tickets</h5>
+                                <a href="{{ route('tickets.index') }}" class="btn btn-primary">View Tickets</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+        @else
+            <p>Please <a href="{{ route('login') }}">log in</a> or <a href="{{ route('register') }}">register</a> to start booking tickets and viewing events.</p>
+        @endauth
+    </div>
+@endsection
+
+
+============================================================
+FILE: resources/views/layouts/app.blade.php
+============================================================
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>{{ config('app.name', 'Laravel') }}</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <!-- Scripts -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+<body class="font-sans antialiased">
+<div class="container-fluid bg-light min-vh-100 d-flex flex-column">
+    <!-- Navigation -->
+    @include('layouts.navigation')
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <!-- Навігаційні посилання -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    @auth
+                        @if(auth()->user()->hasRole('admin'))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('venues.index') }}">Manage Venues</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('events.index') }}">Manage Events</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('tickets.index') }}">Manage Tickets</a>
+                            </li>
+                        @endif
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('cart.index') }}">Cart</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('orders.history') }}">Order History</a>
+                        </li>
+                    @else
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('login') }}">Login</a>
+                        </li>
+                        @if (Route::has('register'))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('register') }}">Register</a>
+                            </li>
+                        @endif
+                    @endauth
+                </ul>
+
+                <!-- Authentication -->
+                @auth
+                    <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                        @csrf
+                        <button type="submit" class="btn btn-outline-danger">Logout</button>
+                    </form>
+                @endauth
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Heading -->
+    @isset($header)
+        <header class="bg-white shadow my-4">
+            <div class="container">
+                <div class="py-3">
+                    {{ $header }}
+                </div>
+            </div>
+        </header>
+    @endisset
+
+    <!-- Page Content -->
+    <main class="container my-4">
+        @yield('content')
+    </main>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+
+============================================================
+FILE: resources/views/layouts/guest.blade.php
+============================================================
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+
+        <title>{{ config('app.name', 'Laravel') }}</title>
+
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.bunny.net">
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+
+        <!-- Scripts -->
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    </head>
+    <body class="font-sans text-gray-900 antialiased">
+        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
+            <div>
+                <a href="/">
+                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+                </a>
+            </div>
+
+            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">
+                {{ $slot }}
+            </div>
+        </div>
+    </body>
+</html>
+
+
+============================================================
+FILE: resources/views/layouts/navigation.blade.php
+============================================================
+<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+    <!-- Primary Navigation Menu -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+            <div class="flex">
+                <!-- Logo -->
+                <div class="shrink-0 flex items-center">
+                    <a href="{{ route('dashboard') }}">
+                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                    </a>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                        {{ __('Dashboard') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('tickets.index')" :active="request()->routeIs('tickets.index')">
+                        {{ __('Tickets') }}
+                    </x-nav-link>
+                    @auth
+                        @if(auth()->user()->hasRole('admin'))
+                            <x-nav-link :href="route('venues.index')" :active="request()->routeIs('venues.index')">
+                                {{ __('Manage Venues') }}
+                            </x-nav-link>
+                            <x-nav-link :href="route('events.index')" :active="request()->routeIs('events.index')">
+                                {{ __('Manage Events') }}
+                            </x-nav-link>
+                            <x-nav-link :href="route('tickets.index')" :active="request()->routeIs('tickets.index')">
+                                {{ __('Manage Tickets') }}
+                            </x-nav-link>
+                        @endif
+                        <x-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')">
+                            {{ __('Cart') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('orders.history')" :active="request()->routeIs('orders.history')">
+                            {{ __('Order History') }}
+                        </x-nav-link>
+                    @endauth
+                </div>
+            </div>
+
+            <!-- Settings Dropdown -->
+            <div class="hidden sm:flex sm:items-center sm:ms-6">
+                @auth
+                    <x-dropdown align="right" width="48">
+                        <x-slot name="trigger">
+                            <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                                <div>{{ Auth::user()->name }}</div>
+
+                                <div class="ms-1">
+                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </button>
+                        </x-slot>
+
+                        <x-slot name="content">
+                            <x-dropdown-link :href="route('profile.edit')">
+                                {{ __('Profile') }}
+                            </x-dropdown-link>
+
+                            <!-- Authentication -->
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+
+                                <x-dropdown-link :href="route('logout')"
+                                                 onclick="event.preventDefault();
+                                                    this.closest('form').submit();">
+                                    {{ __('Log Out') }}
+                                </x-dropdown-link>
+                            </form>
+                        </x-slot>
+                    </x-dropdown>
+                @else
+                    <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a>
+
+                    @if (Route::has('register'))
+                        <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Register</a>
+                    @endif
+                @endauth
+            </div>
+
+            <!-- Hamburger -->
+            <div class="-me-2 flex items-center sm:hidden">
+                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out">
+                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Responsive Navigation Menu -->
+    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                {{ __('Dashboard') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('tickets.index')" :active="request()->routeIs('tickets.index')">
+                {{ __('Tickets') }}
+            </x-responsive-nav-link>
+            @auth
+                @if(auth()->user()->hasRole('admin'))
+                    <x-responsive-nav-link :href="route('venues.index')" :active="request()->routeIs('venues.index')">
+                        {{ __('Manage Venues') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('events.index')" :active="request()->routeIs('events.index')">
+                        {{ __('Manage Events') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('tickets.index')" :active="request()->routeIs('tickets.index')">
+                        {{ __('Manage Tickets') }}
+                    </x-responsive-nav-link>
+                @endif
+                <x-responsive-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')">
+                    {{ __('Cart') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('orders.history')" :active="request()->routeIs('orders.history')">
+                    {{ __('Order History') }}
+                </x-responsive-nav-link>
+            @endauth
+        </div>
+
+        <!-- Responsive Settings Options -->
+        @auth
+            <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
+                <div class="px-4">
+                    <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
+                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                </div>
+
+                <div class="mt-3 space-y-1">
+                    <x-responsive-nav-link :href="route('profile.edit')">
+                        {{ __('Profile') }}
+                    </x-responsive-nav-link>
+
+                    <!-- Authentication -->
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+
+                        <x-responsive-nav-link :href="route('logout')"
+                                               onclick="event.preventDefault();
+                                            this.closest('form').submit();">
+                            {{ __('Log Out') }}
+                        </x-responsive-nav-link>
+                    </form>
+                </div>
+            </div>
+        @endauth
+    </div>
+</nav>
+
+
+============================================================
+FILE: resources/views/orders/confirm.blade.php
+============================================================
+@extends('layouts.app')
+
+@section('content')
+    <div class="container my-5">
+        <h1 class="text-center mb-4">Confirm Your Order</h1>
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Order Summary</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-borderless table-hover">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>Event</th>
+                                    <th>Ticket Type</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php $total = 0; @endphp
+                                @foreach ($cart->tickets as $ticket)
+                                    @php
+                                        $subtotal = $ticket->price * $ticket->pivot->quantity;
+                                        $total += $subtotal;
+                                    @endphp
+                                    <tr>
+                                        <td>{{ $ticket->event->name }}</td>
+                                        <td>{{ $ticket->type }}</td>
+                                        <td>${{ number_format($ticket->price, 2) }}</td>
+                                        <td>{{ $ticket->pivot->quantity }}</td>
+                                        <td>${{ number_format($subtotal, 2) }}</td>
+                                    </tr>
+                                @endforeach
+                                <tr class="table-active">
+                                    <td colspan="4" class="text-end"><strong>Total</strong></td>
+                                    <td><strong>${{ number_format($total, 2) }}</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer d-flex justify-content-between">
+                        <a href="{{ route('cart.index') }}" class="btn btn-secondary">Back to Cart</a>
+                        <form action="{{ route('orders.store') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-success">Confirm Order</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+
+============================================================
+FILE: resources/views/orders/history.blade.php
+============================================================
+@extends('layouts.app')
+
+@section('content')
+    <div class="container my-5">
+        <h1 class="text-center mb-4">Order History</h1>
+        @if ($orders->isEmpty())
+            <div class="alert alert-info text-center">
+                You have no orders yet. <a href="{{ route('tickets.index') }}" class="alert-link">Browse tickets</a>.
+            </div>
+        @else
+            @foreach ($orders as $order)
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">Order #{{ $order->id }} - {{ ucfirst($order->status) }}</h5>
+                        <small>Placed on {{ $order->created_at->format('M d, Y') }}</small>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-borderless table-hover">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>Event</th>
+                                    <th>Ticket Type</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php $total = 0; @endphp
+                                @foreach ($order->tickets as $ticket)
+                                    @php
+                                        $subtotal = $ticket->price * $ticket->pivot->quantity;
+                                        $total += $subtotal;
+                                    @endphp
+                                    <tr>
+                                        <td>{{ $ticket->event->name }}</td>
+                                        <td>{{ $ticket->type }}</td>
+                                        <td>${{ number_format($ticket->price, 2) }}</td>
+                                        <td>{{ $ticket->pivot->quantity }}</td>
+                                        <td>${{ number_format($subtotal, 2) }}</td>
+                                    </tr>
+                                @endforeach
+                                <tr class="table-active">
+                                    <td colspan="4" class="text-end"><strong>Total</strong></td>
+                                    <td><strong>${{ number_format($total, 2) }}</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    @if ($order->status === 'successful')
+                        <div class="card-footer d-flex justify-content-end">
+                            <form action="{{ route('orders.cancel', $order->id) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn btn-warning btn-sm">Refund Order</button>
+                            </form>
+                        </div>
+                    @endif
+                </div>
+            @endforeach
+        @endif
+    </div>
+@endsection
+
+
+============================================================
+FILE: resources/views/profile/edit.blade.php
+============================================================
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            {{ __('Profile') }}
+        </h2>
+    </x-slot>
+
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                <div class="max-w-xl">
+                    @include('profile.partials.update-profile-information-form')
+                </div>
+            </div>
+
+            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                <div class="max-w-xl">
+                    @include('profile.partials.update-password-form')
+                </div>
+            </div>
+
+            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                <div class="max-w-xl">
+                    @include('profile.partials.delete-user-form')
+                </div>
+            </div>
+        </div>
+    </div>
+</x-app-layout>
+
+
+============================================================
+FILE: resources/views/profile/partials/delete-user-form.blade.php
+============================================================
+<section class="space-y-6">
+    <header>
+        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+            {{ __('Delete Account') }}
+        </h2>
+
+        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+            {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.') }}
+        </p>
+    </header>
+
+    <x-danger-button
+        x-data=""
+        x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"
+    >{{ __('Delete Account') }}</x-danger-button>
+
+    <x-modal name="confirm-user-deletion" :show="$errors->userDeletion->isNotEmpty()" focusable>
+        <form method="post" action="{{ route('profile.destroy') }}" class="p-6">
+            @csrf
+            @method('delete')
+
+            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                {{ __('Are you sure you want to delete your account?') }}
+            </h2>
+
+            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.') }}
+            </p>
+
+            <div class="mt-6">
+                <x-input-label for="password" value="{{ __('Password') }}" class="sr-only" />
+
+                <x-text-input
+                    id="password"
+                    name="password"
+                    type="password"
+                    class="mt-1 block w-3/4"
+                    placeholder="{{ __('Password') }}"
+                />
+
+                <x-input-error :messages="$errors->userDeletion->get('password')" class="mt-2" />
+            </div>
+
+            <div class="mt-6 flex justify-end">
+                <x-secondary-button x-on:click="$dispatch('close')">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+
+                <x-danger-button class="ms-3">
+                    {{ __('Delete Account') }}
+                </x-danger-button>
+            </div>
+        </form>
+    </x-modal>
+</section>
+
+
+============================================================
+FILE: resources/views/profile/partials/update-password-form.blade.php
+============================================================
+<section>
+    <header>
+        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+            {{ __('Update Password') }}
+        </h2>
+
+        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+            {{ __('Ensure your account is using a long, random password to stay secure.') }}
+        </p>
+    </header>
+
+    <form method="post" action="{{ route('password.update') }}" class="mt-6 space-y-6">
+        @csrf
+        @method('put')
+
+        <div>
+            <x-input-label for="update_password_current_password" :value="__('Current Password')" />
+            <x-text-input id="update_password_current_password" name="current_password" type="password" class="mt-1 block w-full" autocomplete="current-password" />
+            <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2" />
+        </div>
+
+        <div>
+            <x-input-label for="update_password_password" :value="__('New Password')" />
+            <x-text-input id="update_password_password" name="password" type="password" class="mt-1 block w-full" autocomplete="new-password" />
+            <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2" />
+        </div>
+
+        <div>
+            <x-input-label for="update_password_password_confirmation" :value="__('Confirm Password')" />
+            <x-text-input id="update_password_password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full" autocomplete="new-password" />
+            <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" />
+        </div>
+
+        <div class="flex items-center gap-4">
+            <x-primary-button>{{ __('Save') }}</x-primary-button>
+
+            @if (session('status') === 'password-updated')
+                <p
+                    x-data="{ show: true }"
+                    x-show="show"
+                    x-transition
+                    x-init="setTimeout(() => show = false, 2000)"
+                    class="text-sm text-gray-600 dark:text-gray-400"
+                >{{ __('Saved.') }}</p>
+            @endif
+        </div>
+    </form>
+</section>
+
+
+============================================================
+FILE: resources/views/profile/partials/update-profile-information-form.blade.php
+============================================================
+<section>
+    <header>
+        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+            {{ __('Profile Information') }}
+        </h2>
+
+        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+            {{ __("Update your account's profile information and email address.") }}
+        </p>
+    </header>
+
+    <form id="send-verification" method="post" action="{{ route('verification.send') }}">
+        @csrf
+    </form>
+
+    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+        @csrf
+        @method('patch')
+
+        <div>
+            <x-input-label for="name" :value="__('Name')" />
+            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
+            <x-input-error class="mt-2" :messages="$errors->get('name')" />
+        </div>
+
+        <div>
+            <x-input-label for="email" :value="__('Email')" />
+            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
+            <x-input-error class="mt-2" :messages="$errors->get('email')" />
+
+            @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
+                <div>
+                    <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
+                        {{ __('Your email address is unverified.') }}
+
+                        <button form="send-verification" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
+                            {{ __('Click here to re-send the verification email.') }}
+                        </button>
+                    </p>
+
+                    @if (session('status') === 'verification-link-sent')
+                        <p class="mt-2 font-medium text-sm text-green-600 dark:text-green-400">
+                            {{ __('A new verification link has been sent to your email address.') }}
+                        </p>
+                    @endif
+                </div>
+            @endif
+        </div>
+
+        <div class="flex items-center gap-4">
+            <x-primary-button>{{ __('Save') }}</x-primary-button>
+
+            @if (session('status') === 'profile-updated')
+                <p
+                    x-data="{ show: true }"
+                    x-show="show"
+                    x-transition
+                    x-init="setTimeout(() => show = false, 2000)"
+                    class="text-sm text-gray-600 dark:text-gray-400"
+                >{{ __('Saved.') }}</p>
+            @endif
+        </div>
+    </form>
+</section>
+
+
+============================================================
+FILE: resources/views/tickets/create.blade.php
+============================================================
+@extends('layouts.app')
+
+@section('content')
+    <h1>Create New Ticket</h1>
+    <form action="{{ route('tickets.store') }}" method="POST">
+        @csrf
+        <div class="form-group">
+            <label for="event_id">Event</label>
+            <select class="form-control @error('event_id') is-invalid @enderror" id="event_id" name="event_id" required>
+                @foreach($events as $event)
+                    <option value="{{ $event->id }}" {{ old('event_id') == $event->id ? 'selected' : '' }}>{{ $event->name }}</option>
+                @endforeach
+            </select>
+            @error('event_id')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+        <div id="event-image" class="mb-3">
+            @if (old('event_id'))
+                @php
+                    $event = $events->firstWhere('id', old('event_id'));
+                @endphp
+                @if ($event && $event->image)
+                    <img src="{{ asset('storage/' . $event->image) }}" class="img-fluid" alt="{{ $event->name }}" style="object-fit: cover; height: 200px;">
+                @endif
+            @endif
+        </div>
+        <div class="form-group">
+            <label for="type">Type</label>
+            <input type="text" class="form-control @error('type') is-invalid @enderror" id="type" name="type" value="{{ old('type') }}" required>
+            @error('type')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+        <div class="form-group">
+            <label for="price">Price</label>
+            <input type="number" step="0.01" class="form-control @error('price') is-invalid @enderror" id="price" name="price" value="{{ old('price') }}" required>
+            @error('price')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+        <div class="form-group">
+            <label for="quantity">Quantity</label>
+            <input type="number" class="form-control @error('quantity') is-invalid @enderror" id="quantity" name="quantity" value="{{ old('quantity') }}" required>
+            @error('quantity')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+        <button type="submit" class="btn btn-primary">Create Ticket</button>
+    </form>
+@endsection
+
+
+============================================================
+FILE: resources/views/tickets/edit.blade.php
+============================================================
+@extends('layouts.app')
+
+@section('content')
+    <h1>Edit Ticket</h1>
+    <form action="{{ route('tickets.update', $ticket) }}" method="POST">
+        @csrf
+        @method('PUT')
+        <div class="form-group">
+            <label for="event_id">Event</label>
+            <select class="form-control @error('event_id') is-invalid @enderror" id="event_id" name="event_id" required>
+                @foreach($events as $event)
+                    <option value="{{ $event->id }}" {{ old('event_id', $ticket->event_id) == $event->id ? 'selected' : '' }}>{{ $event->name }}</option>
+                @endforeach
+            </select>
+            @error('event_id')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+        <div id="event-image" class="mb-3">
+            @if ($ticket->event->image)
+                <img src="{{ asset('storage/' . $ticket->event->image) }}" class="img-fluid" alt="{{ $ticket->event->name }}" style="object-fit: cover; height: 200px;">
+            @endif
+        </div>
+        <div class="form-group">
+            <label for="type">Type</label>
+            <input type="text" class="form-control @error('type') is-invalid @enderror" id="type" name="type" value="{{ old('type', $ticket->type) }}" required>
+            @error('type')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+        <div class="form-group">
+            <label for="price">Price</label>
+            <input type="number" step="0.01" class="form-control @error('price') is-invalid @enderror" id="price" name="price" value="{{ old('price', $ticket->price) }}" required>
+            @error('price')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+        <div class="form-group">
+            <label for="quantity">Quantity</label>
+            <input type="number" class="form-control @error('quantity') is-invalid @enderror" id="quantity" name="quantity" value="{{ old('quantity', $ticket->quantity) }}" required>
+            @error('quantity')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+        <button type="submit" class="btn btn-primary">Update Ticket</button>
+    </form>
+@endsection
+
+
+============================================================
+FILE: resources/views/tickets/index.blade.php
+============================================================
+@extends('layouts.app')
+
+@section('content')
+    <div class="container my-5">
+        <h1 class="text-center mb-4">Available Tickets</h1>
+
+        <div class="row">
+            <!-- Секція фільтрів -->
+            <div class="col-md-3">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-light">
+                        <strong>Filters</strong>
+                    </div>
+                    <div class="card-body">
+                        <form method="GET" action="{{ route('tickets.index') }}">
+                            <!-- Пошук -->
+                            <div class="mb-4">
+                                <label for="search" class="form-label">Search by Name</label>
+                                <input type="text" name="search" id="search" class="form-control" placeholder="Type to search..." value="{{ request('search') }}">
+                            </div>
+
+                            <!-- Фільтр за ціною -->
+                            <div class="mb-4">
+                                <label for="price-range" class="form-label">Price</label>
+                                <div class="input-group">
+                                    <input type="number" name="min_price" class="form-control" placeholder="From" value="{{ request('min_price') }}">
+                                    <input type="number" name="max_price" class="form-control" placeholder="To" value="{{ request('max_price') }}">
+                                </div>
+                            </div>
+
+                            <!-- Фільтр за подією -->
+                            <div class="mb-4">
+                                <label for="event" class="form-label">Event</label>
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        @foreach($events as $event)
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="event_id[]" value="{{ $event->id }}" {{ request('event_id') && in_array($event->id, request('event_id')) ? 'checked' : '' }}>
+                                                <label class="form-check-label">
+                                                    {{ $event->name }} ({{ $event->tickets_count }})
+                                                </label>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Сортування -->
+                            <div class="mb-4">
+                                <label for="sort" class="form-label">Sort by Price</label>
+                                <select name="sort" id="sort" class="form-control">
+                                    <option value="" {{ request('sort') == '' ? 'selected' : '' }}>Default</option>
+                                    <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Price: Low to High</option>
+                                    <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Price: High to Low</option>
+                                </select>
+                            </div>
+
+                            <!-- Кнопка застосування фільтрів -->
+                            <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Секція результатів -->
+            <div class="col-md-9">
+                <div class="row">
+                    @foreach ($tickets as $ticket)
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100 shadow-lg border-0">
+                                @if ($ticket->event->image)
+                                    <img src="{{ asset('storage/' . $ticket->event->image) }}" alt="{{ $ticket->event->name }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                                @else
+                                    <img src="https://via.placeholder.com/300x200" alt="No Image" class="card-img-top" style="height: 200px; object-fit: cover;">
+                                @endif
+                                <div class="card-body">
+                                    <h5 class="card-title text-truncate">{{ $ticket->type }}</h5>
+                                    <p class="mb-1 text-muted"><strong>Event:</strong> {{ $ticket->event->name }}</p>
+                                    <p class="mb-1 text-muted"><strong>Date:</strong> {{ $ticket->event->date }}</p>
+                                    <p class="mb-1 text-muted"><strong>Price:</strong> ${{ number_format($ticket->price, 2) }}</p>
+                                    <p class="mb-1 text-muted"><strong>Available:</strong> {{ $ticket->quantity }}</p>
+                                </div>
+                                <div class="card-footer d-flex justify-content-between align-items-center bg-white">
+                                    <a href="{{ route('cart.showAddForm', $ticket->id) }}" class="btn btn-sm btn-success">Add to Cart</a>
+                                    <a href="{{ route('tickets.show', $ticket->id) }}" class="btn btn-sm btn-primary">More Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+                <div class="d-flex justify-content-center">
+                    {{ $tickets->links() }}
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+
+============================================================
+FILE: resources/views/tickets/show.blade.php
+============================================================
+@extends('layouts.app')
+
+@section('content')
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <div class="card shadow-lg border-0">
+                    @if ($ticket->event->image)
+                        <img src="{{ asset('storage/' . $ticket->event->image) }}" class="card-img-top img-fluid rounded-top" alt="{{ $ticket->event->name }}" style="height: 400px; object-fit: cover;">
+                    @else
+                        <img src="https://via.placeholder.com/800x400" class="card-img-top img-fluid rounded-top" alt="No Image" style="height: 400px; object-fit: cover;">
+                    @endif
+                    <div class="card-body">
+                        <h1 class="card-title text-center">{{ $ticket->type }}</h1>
+                        <p class="text-center text-muted"><strong>Event:</strong> {{ $ticket->event->name }}</p>
+                        <p class="text-center text-muted"><strong>Date:</strong> {{ $ticket->event->date }}</p>
+                        <p class="text-center text-muted"><strong>Venue:</strong> {{ $ticket->event->venue->name }}</p>
+                        <div class="text-center mb-4">
+                            <a href="{{ route('events.show', $ticket->event) }}" class="btn btn-outline-primary btn-sm">View Event Info</a>
+                            <a href="{{ route('venues.show', $ticket->event->venue) }}" class="btn btn-outline-secondary btn-sm">View Venue Info</a>
+                        </div>
+                        <hr>
+                        <p class="text-muted"><strong>Price:</strong> ${{ number_format($ticket->price, 2) }}</p>
+                        <p class="text-muted"><strong>Available Quantity:</strong> {{ $ticket->quantity }}</p>
+                    </div>
+                    <div class="card-footer d-flex justify-content-between bg-white">
+                        <a href="{{ route('cart.showAddForm', $ticket->id) }}" class="btn btn-success btn-lg">Add to Cart</a>
+                        <a href="{{ route('tickets.index') }}" class="btn btn-outline-secondary btn-lg">Back to Tickets</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+
+============================================================
+FILE: resources/views/venues/create.blade.php
+============================================================
+@extends('layouts.app')
+
+@section('content')
+    <h1>Create New Venue</h1>
+    <form action="{{ route('venues.store') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="address">Address</label>
+            <input type="text" class="form-control" id="address" name="address" required>
+        </div>
+        <div class="form-group">
+            <label for="capacity">Capacity</label>
+            <input type="number" class="form-control" id="capacity" name="capacity" required>
+        </div>
+        <div class="form-group">
+            <label for="image">Image</label>
+            <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image" accept="image/*">
+            @error('image')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+        <button type="submit" class="btn btn-primary">Create Venue</button>
+    </form>
+@endsection
+
+
+============================================================
+FILE: resources/views/venues/edit.blade.php
+============================================================
+@extends('layouts.app')
+
+@section('content')
+    <h1>Edit Venue</h1>
+    <form action="{{ route('venues.update', $venue) }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        @method('PUT')
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ $venue->name }}" required>
+        </div>
+        <div class="form-group">
+            <label for="address">Address</label>
+            <input type="text" class="form-control" id="address" name="address" value="{{ $venue->address }}" required>
+        </div>
+        <div class="form-group">
+            <label for="capacity">Capacity</label>
+            <input type="number" class="form-control" id="capacity" name="capacity" value="{{ $venue->capacity }}" required>
+        </div>
+        <div class="form-group">
+            <label for="image">Image</label>
+            <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image" accept="image/*">
+            @if($venue->image)
+                <img src="{{ asset('storage/' . $venue->image) }}" alt="{{ $venue->name }}" class="img-thumbnail mt-2" width="150">
+            @endif
+            @error('image')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+        <button type="submit" class="btn btn-primary">Update Venue</button>
+    </form>
+@endsection
+
+
+============================================================
+FILE: resources/views/venues/index.blade.php
+============================================================
+@extends('layouts.app')
+
+@section('content')
+    <h1>Venues</h1>
+
+    @can('create', App\Models\Venue::class)
+        <a href="{{ route('venues.create') }}" class="btn btn-primary mb-3">Create New Venue</a>
+    @endcan
+
+    <div class="container">
+        <div class="row">
+            @foreach ($venues as $venue)
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        @if ($venue->image)
+                            <img src="{{ asset('storage/' . $venue->image) }}" class="card-img-top img-fluid" alt="{{ $venue->name }}" style="object-fit: cover; height: 200px;">
+                        @else
+                            <img src="https://via.placeholder.com/150" class="card-img-top img-fluid" alt="No Image" style="object-fit: cover; height: 200px;">
+                        @endif
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $venue->name }}</h5>
+                            <p>{{ $venue->address }}</p>
+                            <p><strong>Capacity:</strong> {{ $venue->capacity }}</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="{{ route('venues.show', $venue) }}" class="btn btn-primary btn-sm">View Details</a>
+                            @can('update', $venue)
+                                <a href="{{ route('venues.edit', $venue) }}" class="btn btn-warning btn-sm">Edit</a>
+                            @endcan
+                            @can('delete', $venue)
+                            <form action="{{ route('venues.destroy', $venue) }}" method="POST" style="display: inline-block;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
+                            </form>
+                            @endcan
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center">
+        {{ $venues->links() }}
+    </div>
+@endsection
+
+
+============================================================
+FILE: resources/views/venues/show.blade.php
+============================================================
+@extends('layouts.app')
+
+@section('content')
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <div class="card mb-4 shadow-sm">
+                    @if ($venue->image)
+                        <img src="{{ asset('storage/' . $venue->image) }}" class="card-img-top img-fluid" alt="{{ $venue->name }}" style="height: 400px; object-fit: cover;">
+                    @else
+                        <img src="https://via.placeholder.com/800x400" class="card-img-top img-fluid" alt="No Image" style="height: 400px; object-fit: cover;">
+                    @endif
+                    <div class="card-body">
+                        <h1 class="card-title text-center">{{ $venue->name }}</h1>
+                        <p class="text-muted text-center"><strong>Address:</strong> {{ $venue->address }}</p>
+                        <p class="text-muted text-center"><strong>Capacity:</strong> {{ $venue->capacity }}</p>
+                    </div>
+                    <div class="card-footer text-center">
+                        <a href="{{ route('venues.index') }}" class="btn btn-outline-secondary">Back to List</a>
+                        @can('update', $venue)
+                            <a href="{{ route('venues.edit', $venue) }}" class="btn btn-outline-warning">Edit</a>
+                        @endcan
+                        @can('delete', $venue)
+                            <form action="{{ route('venues.destroy', $venue) }}" method="POST" style="display: inline-block;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                            </form>
+                        @endcan
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+
+============================================================
+FILE: resources/views/welcome.blade.php
+============================================================
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome to Booking System</title>
+</head>
+<body>
+<h1>Welcome to the Booking System!</h1>
+</body>
+</html>
+
+
