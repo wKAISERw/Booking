@@ -10,11 +10,13 @@ class AdminUserSeeder extends Seeder
 {
     public function run()
     {
-        User::create([
-            'name' => 'Admin User',
-            'email' => 'admin@example.com',
-            'password' => Hash::make('password'),
-            'role' => 'admin',
-        ]);
+        User::updateOrCreate(
+            ['email' => 'fortayngames@gmail.com'], // Шукаємо за email
+            [
+                'name' => 'Fortayn Admin',
+                'password' => Hash::make('12345678'), // Встанови тут потрібний пароль
+                'role' => 'admin',
+            ]
+        );
     }
 }

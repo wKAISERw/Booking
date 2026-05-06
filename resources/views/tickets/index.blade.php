@@ -35,8 +35,8 @@
                             <div class="border rounded p-3 bg-light" style="max-height: 200px; overflow-y: auto;">
                                 @foreach($events as $event)
                                     <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" name="event_id[]" id="event_{{ $event->id }}" value="{{ $event->id }}" {{ request('event_id') && in_array($event->id, request('event_id')) ? 'checked' : '' }}>
                                         <label class="form-check-label" for="event_{{ $event->id }}">
+                                            <input class="form-check-input" type="checkbox" name="event_id[]" id="event_{{ $event->id }}" value="{{ $event->id }}" {{ in_array($event->id, (array) request('event_id', [])) ? 'checked' : '' }}>
                                             {{ $event->name }} <span class="badge bg-secondary rounded-pill">{{ $event->tickets_count }}</span>
                                         </label>
                                     </div>

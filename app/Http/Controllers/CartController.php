@@ -18,13 +18,30 @@ class CartController extends Controller
     {
         $cart = auth()->user()->cart()->firstOrCreate();
 
-        $cart->tickets()->syncWithoutDetaching([
-            $ticket->id => ['quantity' => $request->input('quantity', 1)]
+        // Скільки таких квитків вже є в корзині?
+        $existingPivot = $cart->tickets()->where('ticket_id', $ticket->id)->first();
+        $existingQuantity = $existingPivot ? $existingPivot->pivot->quantity : 0;
+
+        // Перевіряємо, чи влізе ще
+        $availableToAdd = min(4 - $existingQuantity, $ticket->quantity - $existingQuantity);
+
+        if ($availableToAdd <= 0) {
+            return back()->with('error', 'You have reached the maximum allowed quantity for this ticket.');
+        }
+
+        $request->validate([
+            'quantity' => ['required', 'integer', 'min:1', 'max:' . $availableToAdd]
         ]);
 
-        return redirect()->route('tickets.index')->with('success', 'Ticket added to cart!');
-    }
+        $newQuantity = $existingQuantity + $request->input('quantity');
 
+        // Оновлюємо кількість у корзині
+        $cart->tickets()->syncWithoutDetaching([
+            $ticket->id => ['quantity' => $newQuantity]
+        ]);
+
+        return redirect()->route('cart.index')->with('success', 'Ticket successfully added to your cart!');
+    }
     public function showAddForm(Ticket $ticket)
     {
         return view('cart.add', compact('ticket'));

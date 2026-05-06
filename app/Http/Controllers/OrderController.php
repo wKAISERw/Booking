@@ -11,7 +11,7 @@ class OrderController extends Controller
 {
     public function confirm()
     {
-        $cart = auth()->user()->cart;
+        $cart = auth()->user()->cart()->with('tickets.event')->first(); //
 
         if (!$cart || $cart->tickets->isEmpty()) {
             return redirect()->route('cart.index')->with('error', 'No items in cart!');
@@ -28,6 +28,13 @@ class OrderController extends Controller
             return redirect()->route('cart.index')->with('error', 'No items in cart!');
         }
 
+        // ФІНАЛЬНА ПЕРЕВІРКА: чи ніхто не викупив квитки, поки ми "пили чай"?
+        foreach ($cart->tickets as $ticket) {
+            if ($ticket->quantity < $ticket->pivot->quantity) {
+                return redirect()->route('cart.index')->with('error', "Sorry, there are only {$ticket->quantity} tickets left for {$ticket->event->name}.");
+            }
+        }
+
         $order = Order::create([
             'user_id' => auth()->id(),
             'status' => 'successful',
@@ -39,15 +46,11 @@ class OrderController extends Controller
 
             $order->tickets()->attach($ticket->id, ['quantity' => $quantity]);
 
-            // Зменшуємо кількість квитків
+            // Віднімаємо викуплену кількість із загального пулу
             $ticket->decrement('quantity', $quantity);
-
-            if ($ticket->quantity === 0) {
-                $ticket->delete(); // Видаляємо, якщо квитки закінчились
-            }
         }
 
-        // Очищаємо корзину
+        // Очищаємо корзину після успішної покупки
         $cart->tickets()->detach();
 
         return redirect()->route('orders.history')->with('success', 'Order placed successfully!');
@@ -70,8 +73,7 @@ class OrderController extends Controller
 
     public function history()
     {
-        $orders = auth()->user()->orders()->with('tickets')->get();
-
+        $orders = auth()->user()->orders()->with('tickets.event')->get(); // <--- Додано .event
         return view('orders.history', compact('orders'));
     }
 }

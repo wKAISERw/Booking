@@ -26,7 +26,8 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="date" class="form-label fw-semibold">Date & Time</label>
-                                <input type="datetime-local" class="form-control @error('date') is-invalid @enderror" id="date" name="date" value="{{ old('date', $event->date) }}" required>
+                                <input type="datetime-local" class="form-control @error('date') is-invalid @enderror" id="date" name="date"
+                                       value="{{ old('date', \Carbon\Carbon::parse($event->date)->format('Y-m-d\TH:i')) }}" required>
                                 @error('date')<div class="invalid-feedback">{{ $message }}</div>@enderror
                             </div>
                             <div class="col-md-6 mt-3 mt-md-0">
@@ -42,14 +43,23 @@
 
                         <div class="mb-4">
                             <label for="image" class="form-label fw-semibold">Event Image</label>
-                            @if($event->image)
-                                <div class="mb-2">
-                                    <img src="{{ asset('storage/' . $event->image) }}" alt="Current Image" class="rounded shadow-sm" style="height: 100px; object-fit: cover;">
-                                </div>
-                            @endif
-                            <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image" accept="image/*">
+                            <input type="file"
+                                   class="form-control @error('image') is-invalid @enderror"
+                                   id="image" name="image"
+                                   accept="image/jpeg,image/png,image/jpg,image/gif,image/webp">
                             <div class="form-text">Leave blank to keep current image.</div>
                             @error('image')<div class="invalid-feedback">{{ $message }}</div>@enderror
+
+                            <div id="image-preview-wrapper" class="mt-3">
+                                <p class="text-muted mb-1 small" id="preview-label">
+                                    @if($event->image) Current image: @endif
+                                </p>
+                                <img id="image-preview"
+                                     src="{{ $event->image ? asset('storage/' . $event->image) : '#' }}"
+                                     alt="Preview"
+                                     class="rounded shadow-sm"
+                                     style="max-height: 200px; object-fit: cover; {{ $event->image ? '' : 'display:none;' }}">
+                            </div>
                         </div>
 
                         <div class="d-flex justify-content-end gap-2">
@@ -61,4 +71,28 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById('image').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const allowed = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/webp'];
+            if (!allowed.includes(file.type)) {
+                alert('Please select a valid image file (JPEG, PNG, GIF, WEBP).');
+                this.value = '';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                const preview = document.getElementById('image-preview');
+                const label = document.getElementById('preview-label');
+                preview.src = event.target.result;
+                preview.style.display = 'block';
+                label.textContent = 'New image preview:';
+            };
+            reader.readAsDataURL(file);
+        });
+    </script>
 @endsection

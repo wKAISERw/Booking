@@ -48,6 +48,11 @@
                                             <div>
                                                 <h6 class="mb-0 fw-bold">{{ $ticket->event->name }}</h6>
                                                 <small class="text-muted">{{ \Carbon\Carbon::parse($ticket->event->date)->format('M d, Y') }}</small>
+                                                @if($ticket->seat_info)
+                                                    <div class="small text-info mt-1">
+                                                        <i class="bi bi-geo-alt"></i> {{ $ticket->seat_info }}
+                                                    </div>
+                                                @endif
                                             </div>
                                         </div>
                                     </td>

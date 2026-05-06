@@ -49,6 +49,18 @@
                             </div>
                         </div>
                     </div>
+                    
+                    @if($ticket->seat_info)
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center bg-light rounded p-3 border-start border-4 border-info">
+                                <i class="bi bi-geo fs-4 text-info me-3"></i>
+                                <div>
+                                    <p class="text-muted small mb-0">Seating Details</p>
+                                    <span class="fw-bold text-dark">{{ $ticket->seat_info }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
 
                     <div class="alert alert-info d-flex align-items-center border-0">
                         <i class="bi bi-info-circle-fill fs-4 me-3"></i>

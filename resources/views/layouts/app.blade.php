@@ -14,7 +14,9 @@
     <!-- Bootstrap 5 CSS & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
+    <script>
+        window.userId = {{ auth()->check() ? auth()->id() : 'null' }};
+    </script>
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -56,6 +58,30 @@
 
 <!-- Bootstrap 5 JS Bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+@auth
+    <script type="module">
+        window.onlineUsers = [];
 
+        window.Echo.join('chat-room')
+            .here((users) => {
+                window.onlineUsers = users;
+                window.dispatchEvent(new CustomEvent('presence-updated'));
+            })
+            .joining((user) => {
+                window.onlineUsers.push(user);
+                window.dispatchEvent(new CustomEvent('presence-updated'));
+            })
+            .leaving((user) => {
+                console.log('User leaving:', user);
+                // Використовуй подвійне дорівнює == або Number() для надійності
+                window.onlineUsers = window.onlineUsers.filter(u => Number(u.id) !== Number(user.id));
+                window.dispatchEvent(new CustomEvent('presence-updated'));
+            });
+
+        window.addEventListener('beforeunload', () => {
+            window.Echo.leave('chat-room');
+        });
+    </script>
+@endauth
 </body>
 </html>

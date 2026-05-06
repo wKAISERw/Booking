@@ -21,4 +21,12 @@ class Event extends Model
     {
         return $this->belongsTo(Venue::class);
     }
+    protected static function booted()
+    {
+        static::deleting(function ($event) {
+            if ($event->image) {
+                \Storage::disk('public')->delete($event->image);
+            }
+        });
+    }
 }

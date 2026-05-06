@@ -18,7 +18,7 @@ return new class extends Migration
             $table->decimal('total_price', 10, 2);
             $table->timestamps();
         });
-    
+
         Schema::create('order_ticket', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->constrained()->onDelete('cascade');
@@ -27,5 +27,9 @@ return new class extends Migration
             $table->timestamps();
         });
     }
-    
+    public function down()
+    {
+        Schema::dropIfExists('order_ticket');
+        Schema::dropIfExists('orders');
+    }
 };

@@ -23,17 +23,6 @@
                         <i class="bi bi-ticket-detailed me-1"></i> Tickets
                     </a>
                 </li>
-
-                <!-- Venues.index доступний ТІЛЬКИ адміну згідно з твоїми роутами -->
-                @auth
-                    @if(auth()->user()->hasRole('admin'))
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('venues.index') ? 'active fw-bold' : '' }}" href="{{ route('venues.index') }}">
-                                <i class="bi bi-buildings me-1"></i> Venues
-                            </a>
-                        </li>
-                    @endif
-                @endauth
             </ul>
 
             <!-- Користувацькі та Адмінські посилання (справа) -->
@@ -51,12 +40,25 @@
                                 <li><a class="dropdown-item" href="{{ route('tickets.index') }}"><i class="bi bi-ticket-perforated me-2"></i>Manage Tickets</a></li>
                             </ul>
                         </li>
-
-                        <!-- Вертикальна лінія-розділювач -->
                         <li class="nav-item d-none d-lg-block mx-1">
                             <div class="vr text-white h-100 opacity-25"></div>
                         </li>
                     @endif
+
+                    <!-- Чат / Підтримка -->
+                    <li class="nav-item">
+                        @if(auth()->user()->hasRole('admin'))
+                            <a class="nav-link {{ request()->routeIs('admin.messages', 'chat') ? 'active text-primary fw-bold' : '' }}" href="{{ route('admin.messages') }}" title="User Messages">
+                                <i class="bi bi-chat-dots fs-5"></i>
+                                <span class="d-lg-none ms-2">Messages</span>
+                            </a>
+                        @else
+                            <a class="nav-link {{ request()->routeIs('user.messages', 'chat') ? 'active text-primary fw-bold' : '' }}" href="{{ route('user.messages') }}" title="Contact Support">
+                                <i class="bi bi-headset fs-5"></i>
+                                <span class="d-lg-none ms-2">Support</span>
+                            </a>
+                        @endif
+                    </li>
 
                     <!-- Корзина та Замовлення -->
                     <li class="nav-item">

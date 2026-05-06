@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
-    
+
         Schema::create('cart_ticket', function (Blueprint $table) {
             $table->id();
             $table->foreignId('cart_id')->constrained()->onDelete('cascade');
@@ -25,5 +25,10 @@ return new class extends Migration
             $table->timestamps();
         });
     }
-    
+    public function down()
+    {
+        Schema::dropIfExists('cart_ticket');
+        Schema::dropIfExists('carts');
+    }
 };
+

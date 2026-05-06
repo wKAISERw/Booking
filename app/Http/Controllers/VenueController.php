@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Venue;
 
-
-
 class VenueController extends Controller
 {
     public function index()
@@ -23,10 +21,10 @@ class VenueController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|max:255',
-            'address' => 'required',
+            'name'     => 'required|max:255',
+            'address'  => 'required',
             'capacity' => 'required|integer|min:1',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image'    => 'nullable|mimes:jpeg,png,jpg,gif,webp|max:5120',
         ]);
 
         if ($request->hasFile('image')) {
@@ -46,14 +44,21 @@ class VenueController extends Controller
     public function update(Request $request, Venue $venue)
     {
         $validated = $request->validate([
-            'name' => 'required|max:255',
-            'address' => 'required',
+            'name'     => 'required|max:255',
+            'address'  => 'required',
             'capacity' => 'required|integer|min:1',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image'    => 'nullable|mimes:jpeg,png,jpg,gif,webp|max:5120',
         ]);
 
         if ($request->hasFile('image')) {
+            // Видаляємо старе зображення якщо є
+            if ($venue->image) {
+                \Storage::disk('public')->delete($venue->image);
+            }
             $validated['image'] = $request->file('image')->store('images', 'public');
+        } else {
+            // Не чіпаємо поточне зображення якщо нове не завантажено
+            unset($validated['image']);
         }
 
         $venue->update($validated);
@@ -70,9 +75,7 @@ class VenueController extends Controller
     {
         $this->authorize('delete', $venue);
 
-        // Видалення запису з бази даних
         if ($venue->image) {
-            // Видалення файлу зображення з `storage`
             \Storage::disk('public')->delete($venue->image);
         }
 

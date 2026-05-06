@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('description');
             $table->dateTime('date');
-            $table->foreignId('venue_id')->constrained();
+            $table->foreignId('venue_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

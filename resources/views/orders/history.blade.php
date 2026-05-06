@@ -50,7 +50,15 @@
                                             $total += $subtotal;
                                         @endphp
                                         <tr>
-                                            <td class="ps-4 py-3 fw-semibold">{{ $ticket->event->name }}</td>
+                                            <td class="ps-4 py-3">
+                                                <div class="fw-semibold">{{ $ticket->event->name }}</div>
+                                                <div class="small text-muted mb-1">{{ \Carbon\Carbon::parse($ticket->event->date)->format('M d, Y') }}</div>
+                                                @if($ticket->seat_info)
+                                                    <div class="small text-info">
+                                                        <i class="bi bi-geo-alt"></i> {{ $ticket->seat_info }}
+                                                    </div>
+                                                @endif
+                                            </td>
                                             <td><span class="badge bg-light text-dark border">{{ $ticket->type }}</span></td>
                                             <td class="text-muted">${{ number_format($ticket->price, 2) }}</td>
                                             <td>{{ $ticket->pivot->quantity }}</td>

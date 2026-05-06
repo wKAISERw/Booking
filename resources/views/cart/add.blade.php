@@ -27,8 +27,7 @@
                             <label for="quantity" class="form-label fw-bold">Quantity</label>
                             <div class="input-group input-group-lg">
                                 <span class="input-group-text bg-light"><i class="bi bi-123"></i></span>
-                                <input type="number" name="quantity" id="quantity" class="form-control @error('quantity') is-invalid @enderror" value="1" min="1" max="{{ $ticket->quantity }}" required>
-                            </div>
+                                <input type="number" name="quantity" id="quantity" class="form-control @error('quantity') is-invalid @enderror" value="1" min="1" max="{{ min(4, $ticket->quantity) }}" required>                            </div>
                             @error('quantity')
                             <div class="text-danger small mt-1">{{ $message }}</div>
                             @enderror
