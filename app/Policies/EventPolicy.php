@@ -10,14 +10,14 @@ class EventPolicy
 {
     use HandlesAuthorization;
 
-    public function viewAny(User $user)
+    public function viewAny(?User $user)
     {
-        return true; // All authenticated users can view events
+        return true;
     }
 
-    public function view(User $user, Event $event)
+    public function view(?User $user, Event $event)
     {
-        return true; // All authenticated users can view individual events
+        return true;
     }
 
     public function create(User $user)

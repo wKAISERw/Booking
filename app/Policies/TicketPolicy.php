@@ -10,12 +10,12 @@ class TicketPolicy
 {
     use HandlesAuthorization;
 
-    public function viewAny(User $user)
+    public function viewAny(?User $user)
     {
         return true;
     }
 
-    public function view(User $user, Ticket $ticket)
+    public function view(?User $user, Ticket $ticket)
     {
         return true;
     }

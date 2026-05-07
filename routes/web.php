@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VenueController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\TicketController;
-use App\Http\Controllers\BookingController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\MessageController;
@@ -39,6 +39,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('venues', VenueController::class);
         Route::resource('events', EventController::class)->except(['index', 'show']);
         Route::resource('tickets', TicketController::class);
+        Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users.index');
+        Route::patch('/admin/users/{user}/role', [UserController::class, 'updateRole'])->name('admin.users.updateRole');
     });
 
     // Cart routes

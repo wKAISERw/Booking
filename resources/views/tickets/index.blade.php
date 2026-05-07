@@ -92,7 +92,11 @@
                                 </div>
                             </div>
                             <div class="card-footer bg-white border-top-0 d-flex gap-2 p-3">
-                                <a href="{{ route('cart.showAddForm', $ticket->id) }}" class="btn btn-success flex-grow-1"><i class="bi bi-cart-plus me-1"></i> Add</a>
+                                @auth
+                                    <a href="{{ route('cart.showAddForm', $ticket->id) }}" class="btn btn-success flex-grow-1"><i class="bi bi-cart-plus me-1"></i> Add</a>
+                                @else
+                                    <a href="{{ route('login') }}" class="btn btn-outline-primary flex-grow-1"><i class="bi bi-box-arrow-in-right me-1"></i> Login to buy</a>
+                                @endauth
                                 <a href="{{ route('tickets.show', $ticket->id) }}" class="btn btn-outline-secondary px-3" title="Details"><i class="bi bi-info-circle"></i></a>
                             </div>
                         </div>

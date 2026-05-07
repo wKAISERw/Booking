@@ -10,12 +10,12 @@ class VenuePolicy
 {
     use HandlesAuthorization;
 
-    public function viewAny(User $user)
+    public function viewAny(?User $user)
     {
         return true;
     }
 
-    public function view(User $user, Venue $venue)
+    public function view(?User $user, Venue $venue)
     {
         return true;
     }

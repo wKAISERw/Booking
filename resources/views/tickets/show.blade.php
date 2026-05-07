@@ -49,7 +49,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     @if($ticket->seat_info)
                         <div class="mb-4">
                             <div class="d-flex align-items-center bg-light rounded p-3 border-start border-4 border-info">
@@ -70,10 +70,19 @@
                     </div>
                 </div>
 
-                <div class="card-footer bg-light p-4 border-top-0 d-flex justify-content-between align-items-center">
-                    <a href="{{ route('tickets.index') }}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-2"></i>Back</a>
-                    <a href="{{ route('cart.showAddForm', $ticket->id) }}" class="btn btn-success btn-lg px-5 shadow-sm"><i class="bi bi-cart-plus me-2"></i>Add to Cart</a>
-                </div>
+                    <div class="card-footer bg-light p-4 border-top-0 d-flex justify-content-between align-items-center">
+                        <a href="{{ route('tickets.index') }}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-2"></i>Back</a>
+
+                        @auth
+                            <a href="{{ route('cart.showAddForm', $ticket->id) }}" class="btn btn-success btn-lg px-5 shadow-sm"><i class="bi bi-cart-plus me-2"></i>Add to Cart</a>
+                        @else
+                            <div class="text-end border-start ps-4">
+                                <span class="text-muted fw-semibold me-3 d-none d-md-inline">Want to purchase tickets?</span>
+                                <a href="{{ route('login') }}" class="btn btn-primary shadow-sm"><i class="bi bi-person-circle me-1"></i> Log In</a>
+                                <a href="{{ route('register') }}" class="btn btn-outline-secondary ms-2 shadow-sm">Register</a>
+                            </div>
+                        @endauth
+                    </div>
             </div>
         </div>
     </div>
